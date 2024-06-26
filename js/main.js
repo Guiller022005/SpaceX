@@ -144,4 +144,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error fetching rocket data:", error);
     }
 });
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const rockets = await getAllRockets();
+        if (rockets.length > 0) {
+            const rocketType = rockets[0].rocket_type; // Tipo de cohete
+            const rocketInService = rockets[0].active ? "Yes" : "No"; // Cohete en servicio
+            const numberOfStages = rockets[0].stages; // Número de etapas
+            const numberOfPropellants = rockets[0].engines.propellant_1 + " & " + rockets[0].engines.propellant_2; // Número de propelentes
+            const hasLandingLegs = rockets[0].landing_legs.number > 0 ? "Yes" : "No"; // Tiene patas de aterrizaje
+            const legMaterial = rockets[0].landing_legs.material; // Material de las patas de aterrizaje
 
+            const data = [
+                { title: 'Rocket Type', value: rocketType },
+                { title: 'Rocket in Service', value: rocketInService },
+                { title: 'Low', value: rockets[0].cost_per_launch },
+                { title: 'Number of Stages', value: numberOfStages },
+                { title: 'Number of Propellants', value: numberOfPropellants },
+                { title: 'Landing Legs', value: hasLandingLegs },
+                { title: 'Leg Material', value: legMaterial }
+            ];
+
+            const container = document.querySelector('.section__information__2 .load');
+            container.innerHTML = ''; // Limpiar el contenido actual del contenedor
+
+            data.forEach(item => {
+                const infoBox = document.createElement('div');
+                infoBox.classList.add('load-item');
+                infoBox.innerHTML = `
+                    <p class="load-title">${item.title}</p>
+                    <p class="load-value">${item.value}</p>
+                `;
+                container.appendChild(infoBox);
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching rocket data:", error);
+    }
+});

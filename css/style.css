@@ -113,7 +113,7 @@ body {
     align-items: center;
     width: 80%;
     height: 80%;
-    background-color: #000;
+    background-color: rgba(26, 28, 72, 10);
     border-radius: 50%;
     color: #fff;
     font-size: 1rem;
@@ -128,20 +128,14 @@ body {
     z-index: 3;
 }
 
-.load{
-    background: linear-gradient(120deg, #ffffff0e 30%, #ffffff23 38%, #f0f0f032 40%, #e5e5e50c 40%);
-    background-size: 200% 100%;
-    background-position: 100% 0;
-    animation: load 2s infinite;
-    width: 100%;
-    margin: 12px 0;
-    height: 100px;
-}
+
+
 @keyframes load{
     100%{
         background-position: -100% 0;
     }
 }
+
 .main {
     flex: 1;
     display: grid;
@@ -246,7 +240,11 @@ body {
     grid-template-areas:
         "colum__1 colum__2 colum__3";
 }
-
+.section__information__2  {
+    height: 200px;
+    overflow-y: scroll; /* Habilita el scroll vertical */
+    padding: 15px; /* Ajusta el espacio interior para evitar el desbordamiento */
+}
 
 
 
@@ -300,15 +298,30 @@ body {
     grid-area: table__colum__2;
 }
 
+
 .load {
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    color: white;
+    color: var(--color--five);
     display: flex;
     flex-direction: column;
     position: relative; /* Para posicionar la línea */
     margin-bottom: 20px; /* Espacio entre elementos */
+}
+
+.load-item {
+    margin-bottom: 10px;
+}
+
+.load-title {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.load-value {
+    margin-left: 10px; /* Espaciado entre título y valor */
+    color: var(--color--two);
 }
 
 

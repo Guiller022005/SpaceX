@@ -45,33 +45,87 @@ body {
 .rocket-subtitle {
     color: var(--color--five);
     font-size: 1.5rem;
-    margin-bottom: 8px; /* Ajusta el margen inferior según sea necesario */
-    padding-left: 20px; /* Ajusta el padding izquierdo para mover el subtítulo hacia la derecha */
+    margin-bottom: 8px; 
+    padding-left: 20px; 
 }
 
-/* Estilos para la descripción del cohete */
+
 .rocket-description {
     color: var(--color--two);
     line-height: 1.2;
     font-size: 1rem;
-    margin-top: 10px; /* Ajusta el margen superior según sea necesario */
-    padding-left: 10px; /* Ajusta el padding izquierdo para mover la descripción hacia la derecha */
+    margin-top: 10px; 
+    padding-left: 10px; 
 }
 
-/* Ajuste para el contenedor de la descripción */
+
 .description__item {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Alinea el contenido a la izquierda */
+    align-items: flex-start; 
     margin-top: 20px;
-    padding: 0 20px; /* Agrega un padding izquierdo y derecho para espacio interno */
+    padding: 0 20px; 
 }
 
-/* Opcional: estilos adicionales para otros elementos dentro de description__item */
 .description__item p {
     color: var(--color--five);
-    margin-bottom: 10px; /* Ajusta el margen inferior del párrafo */
-    padding-left: 20px; /* Ajusta el padding izquierdo para mover el párrafo hacia la derecha */
+    margin-bottom: 10px;
+    padding-left: 20px; 
+}
+
+.section__image {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.rocket-image {
+    width: 100%;
+    max-width: 500px;
+    flex-shrink: 0;
+    transition: transform 0.5s ease;
+}
+.progress-circles-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* Adjust the spacing between circles */
+}
+
+.progress-circle {
+    position: relative;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background: conic-gradient(var(--progress-color, #4caf50) 0%, var(--progress-color, #4caf50) var(--progress, 0%), transparent var(--progress, 0%));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.progress-circle::after {
+    content: attr(data-value);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%;
+    background-color: #000;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1rem;
+    z-index: 2;
+}
+
+.progress-title {
+    text-align: center;
+    margin-top: 60px;
+    color: #fff;
+    font-size: 0.8rem;
+    z-index: 3;
 }
 
 .load{
@@ -193,34 +247,8 @@ body {
         "colum__1 colum__2 colum__3";
 }
 
-.section__information__2 {
-    grid-area: colum__1;
-    display: grid;
-    grid-template-rows: 1fr 1.3fr;
-    grid-template-areas:
-        "carusel__colum__1"
-        "table__colum__1";
-}
 
-.section__information__2 div:first-child {
-    grid-area: carusel__colum__1;
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    justify-content: space-evenly;
-}
 
-.section__information__2 div:first-child>.carousel__item {
-  
-    min-width: 48%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.section__information__2 div:last-child {
-    grid-area: table__colum__1;
-}
 
 .section__image {
     height: 40vh;
@@ -261,16 +289,28 @@ body {
     justify-content: space-evenly;
 }
 
-.section__information__3 div:first-child>.carousel__item {
+.section____3 div:first-child>.carousel__item {
     min-width: 48%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.section__information__3 div:last-child {
+.section____3 div:last-child {
     grid-area: table__colum__2;
 }
+
+.load {
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Para posicionar la línea */
+    margin-bottom: 20px; /* Espacio entre elementos */
+}
+
 
 .footer {
     grid-area: section__footer;
@@ -337,19 +377,19 @@ body {
 }
 
 
-.nav__information {
+.nav__ {
     /* background: red; */
     grid-area: nav__2;
     height: 80vh;
 }
 
-.information__item {
+.__item {
     /* background: violet; */
     overflow-y: auto;
     height: 75vh;
 }
 
-.information__buttom {
+.__buttom {
     /* background: #00ff84; */
     display: flex;
     justify-content: center;

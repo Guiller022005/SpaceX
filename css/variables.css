@@ -6,6 +6,8 @@
     --color--four: #e52d2d;
     --color--five: #ffffff;
     --color--six: #ffd733;
+    --progress-color: #4caf50;
+    --background-color: #ddd; /* Light gray for background */
 
     --layout-description-container-x: 10px;
     --layout-description-container-y: 10px;

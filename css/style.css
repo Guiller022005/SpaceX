@@ -35,12 +35,45 @@ body {
     /* background: red; */
     color: var(--color--five);
     height: 10vh;
-    font-size: 2.3rem;
+    font-size: 1.7rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
 }
+
+.rocket-subtitle {
+    color: var(--color--five);
+    font-size: 1.5rem;
+    margin-bottom: 8px; /* Ajusta el margen inferior según sea necesario */
+    padding-left: 20px; /* Ajusta el padding izquierdo para mover el subtítulo hacia la derecha */
+}
+
+/* Estilos para la descripción del cohete */
+.rocket-description {
+    color: var(--color--two);
+    line-height: 1.2;
+    font-size: 1rem;
+    margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+    padding-left: 10px; /* Ajusta el padding izquierdo para mover la descripción hacia la derecha */
+}
+
+/* Ajuste para el contenedor de la descripción */
+.description__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+    margin-top: 20px;
+    padding: 0 20px; /* Agrega un padding izquierdo y derecho para espacio interno */
+}
+
+/* Opcional: estilos adicionales para otros elementos dentro de description__item */
+.description__item p {
+    color: var(--color--five);
+    margin-bottom: 10px; /* Ajusta el margen inferior del párrafo */
+    padding-left: 20px; /* Ajusta el padding izquierdo para mover el párrafo hacia la derecha */
+}
+
 .load{
     background: linear-gradient(120deg, #ffffff0e 30%, #ffffff23 38%, #f0f0f032 40%, #e5e5e50c 40%);
     background-size: 200% 100%;
@@ -56,7 +89,7 @@ body {
     }
 }
 .main {
-    height: 70vh;
+    flex: 1;
     display: grid;
     grid-template-columns: 1.5fr 6fr 2fr;
     grid-template-areas: "nav__1 main nav__2";
@@ -101,12 +134,10 @@ body {
 }
 
 .main__section {
-    height: 65vh;
-    grid-area: main;
-    position: relative;
+    height: auto; /* Ajuste automático de la altura */
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: 2.3fr 5fr 1fr;
+    grid-template-rows: auto 1fr auto;
     grid-template-areas:
         "section__header"
         "section__main"
@@ -286,6 +317,7 @@ body {
     border-left: 48px solid transparent;
     border-right: 0px solid transparent;
     border-bottom: 70px solid  var(--color--one);
+    
 }
 
 .footer ul li {

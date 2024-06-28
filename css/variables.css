@@ -2,7 +2,7 @@
     --color--one: #14162C;
     --color--one--rgba: #191b3fdf;
     --color--two: #cfcfd1;
-    --color--three: #298bfe;
+    --color--three: #ac07ee;
     --color--four: #e52d2d;
     --color--five: #ffffff;
     --color--six: #ffd733;
@@ -14,6 +14,11 @@
 @font-face {
     font-family: "Roboto-Regular";
     src: url(../storage/font/Roboto/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Roboto-Bold";
+    src: url(../storage/font/Roboto/Roboto-Bold.ttf);
 }
 /* 
     <!-- Check icons -->

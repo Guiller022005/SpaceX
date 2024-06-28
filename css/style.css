@@ -9,8 +9,11 @@
 }
 
 body {
-    background: linear-gradient(var(--color--one), var(--color--one--rgba));
-}
+    background-image: url("../storage/img/icons/giphy.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+} 
 
 *::-webkit-scrollbar {
     height: 12px;
@@ -330,7 +333,9 @@ body {
     align-items: center;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
+    gap: 10px;
 }
+
 .footer ul::after{
     content: "";
     position: relative;
@@ -358,6 +363,7 @@ body {
 }
 .footer ul li {
     list-style: none;
+    
 }
 
 .footer ul li a {
@@ -468,3 +474,4 @@ progress[value]::-moz-progress-bar {
     border-radius: 10em;
     background: var(--color);
 }
+

@@ -2,28 +2,40 @@ import {
     getAllRockets, 
     getAllRocketsId
 } from "../modules/rockets.js";
+///
 import { 
     nameRockets,
-    capsulesName
+    capsulesName,
+    crewNames
 } from "./title.js";
+///
 import { 
     informationRockets,
     informationLaunchCostRocket,
     informationFirstFlightRocket,
     informationWebRocket,
     
+    crewIdPage,
+    crewmission,
+    crewWiki
+    
 } from "./information.js";
+///
 import { 
     tableRocketColum1, 
-    tableRocketColum2
+    tableRocketColum2,
+    tableCrewColum1,
 } from "./tables.js";
+///
 import { 
     informRocketEngineThrustSeaLevel, 
     informRocketEngineThrustVacuum
 } from "./inform.js";
+///
 import { 
     imageRockets 
 } from "./card.js";
+///
 import { 
     progressRocketWeight,
     progressPayloadWeights, 
@@ -38,6 +50,12 @@ import {
     getAllCapsules_Id,
     getCapsules 
 } from "../modules/capsules.js";
+///
+import { 
+    getAllCrew,
+    getAllCrew_Id,
+    getCrew
+} from "../modules/crew.js";
 
 
 export const load = async()=>{
@@ -322,6 +340,112 @@ export const paginationCapsules = async(page=1, limit=4)=>{
     end.innerHTML = "&raquo;";
     end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
     end.addEventListener("click", getId_Capsules)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+const getId_Crew = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = ""
+        paginacion.append(await paginationCapsules(Number(e.target.dataset.page)))
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1]
+            
+            p1.click();
+        }, 200);
+    }
+
+    let crew = await getId_Crew(e.target.id);
+    console.log(crew);
+
+    await crewNames(crew.name)
+  
+    let description__item = document.querySelector("#description__item");
+    description__item.innerHTML = "";
+
+    let crewLaunches = await crewmission(crew.launches);
+    description__item.append(crewLaunches);
+  
+    let crewWikipediaElement = await crewWiki(crew.wikipedia);
+    let information__2 = document.getElementById('information__2'); // Este es el nuevo contenedor
+    information__2.innerHTML = ""; // Limpia el contenido actual si es necesario
+    information__2.appendChild(crewWikipediaElement);
+  
+
+  let information__table__2 = document.querySelector("#information__table__2");
+  information__table__2.innerHTML = "";
+  let h3 = document.createElement("h3");
+  h3.textContent = "Capsule information";
+  let hr = document.createElement("hr");
+  information__table__1.append(h3, hr);
+
+  let div = document.createElement("div");
+  div.classList.add("table__container__2");
+
+  let div1 = document.createElement("div");
+  let span1 = document.createElement("span");
+  span1.textContent = "Agency";
+  let strong1 = document.createElement("strong");
+  strong1.textContent = `${crew.agency}`;
+  div1.append(span1, strong1);
+
+  let div2 = document.createElement("div");
+  let span2 = document.createElement("span");
+  span2.textContent = "Status";
+  let strong2 = document.createElement("strong");
+  strong2.textContent = `${crew.status}`;
+  div2.append(span2, strong2);
+
+  div.append(div1, div2);
+  information__table__2.append(div);
+
+  div.append(div1_2, div2_2);
+  information__table__2.append(div);
+};
+
+export const paginationCrews = async(page=1, limit=4)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAllCrew(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", crewIdPage)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", crewIdPage)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllCrew)
     div.appendChild(end);
     console.log(div);
     let [back, p1,p2,p3,p4, next] = div.children

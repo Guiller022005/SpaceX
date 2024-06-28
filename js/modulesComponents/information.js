@@ -125,7 +125,7 @@ export const capsulesIdPage  = async(id)=>{
     img.setAttribute("src", "storage/img/icons/rocket.svg")
 
     img.setAttribute("width", "50"); 
-     img.setAttribute("height", "40");
+    img.setAttribute("height", "40");
 
     divFirst.append(img);
     
@@ -176,6 +176,125 @@ export const capsulesType = async (type) => {
     small.style.color = "white"; 
     small.style.marginLeft = "20px";// Establecer el color del texto en blanco
     divLast.appendChild(small);
+
+    divWrapper.appendChild(divFirst);
+    divWrapper.appendChild(divLast);
+
+    div.appendChild(divWrapper);
+
+    return div;
+}
+
+export const crewIdPage  = async(id)=>{
+    let div = document.createElement('div');
+    div.classList.add('description__container')
+    let divFirst = document.createElement('div');
+    let img = document.createElement('img');
+    img.setAttribute("src", "storage/img/icons/rocket.svg")
+
+    img.setAttribute("width", "50"); 
+    img.setAttribute("height", "40");
+
+    divFirst.append(img);
+    
+    let divLast = document.createElement('div');
+    let h3 = document.createElement('h3');
+    h3.textContent = "ID:"
+    let small = document.createElement('small');
+    small.textContent = id
+    divLast.append(h3, small);
+    div.append(divFirst, divLast);
+
+    return div; // Devuelve el elemento div en lugar de agregarlo directamente al DOM
+}
+
+export const crewmission = async (mission) => {
+    let div = document.createElement('div');
+    div.classList.add('description__container2');
+
+    
+    let divWrapper = document.createElement('div');
+    divWrapper.style.display = "flex"; // Utilizar flexbox
+    divWrapper.style.alignItems = "center"; // Alinear elementos verticalmente al centro
+    divWrapper.style.marginBottom = "20px"; // Agregar espacio inferior
+    divWrapper.style.marginLeft = "20px";
+
+    let divFirst = document.createElement('div');
+    let img = document.createElement('img');
+    img.setAttribute("src", "storage/img/icons/type.svg");
+    img.setAttribute("width", "50"); 
+    img.setAttribute("height", "40");
+    divFirst.appendChild(img);
+
+    let divLast = document.createElement('div');
+
+    let h3 = document.createElement('h3');
+    h3.textContent = "Mission:";
+    h3.style.color = "white"; // Establecer el color del texto en blanco
+    h3.style.marginLeft = "20px";
+    divLast.appendChild(h3);
+
+    if (Array.isArray(mission) && mission.length > 0) {
+        let ul = document.createElement('ul');
+        launches.forEach((launchId) => {
+            let li = document.createElement('li');
+            let small = document.createElement('small');
+            small.textContent = launchId;
+            li.appendChild(small);
+            ul.appendChild(li);
+        });
+        divLast.appendChild(ul);
+    } else {
+        // Si solo hay una launch
+        let small = document.createElement('small');
+        small.textContent = launches;
+        divLast.appendChild(small);
+    }
+
+    divWrapper.appendChild(divFirst);
+    divWrapper.appendChild(divLast);
+
+    return div;
+}
+
+export const crewWiki = async (wikipedia) => {
+    let div = document.createElement('div');
+    div.classList.add('description__container2');
+
+    let divWrapper = document.createElement('div');
+    divWrapper.style.display = "flex"; // Utilizar flexbox
+    divWrapper.style.alignItems = "center"; // Alinear elementos verticalmente al centro
+    divWrapper.style.marginBottom = "20px"; 
+    divWrapper.style.marginLeft = "20px";
+
+    let divFirst = document.createElement('div');
+    let img = document.createElement('img');
+    img.setAttribute("src", "storage/img/icons/wiki.svg");
+    img.setAttribute("width", "50"); 
+    img.setAttribute("height", "40");
+    divFirst.appendChild(img);
+
+    let divLast = document.createElement('div');
+
+    let h3 = document.createElement('h3');
+    h3.textContent = "Wikipedia:";
+    h3.style.color = "white"; // Establecer el color del texto en blanco
+    h3.style.marginLeft = "20px";
+    divLast.appendChild(h3);
+
+    // Crear un enlace (<a>) para el texto de Wikipedia
+    let wikipediaLink = document.createElement('a');
+    wikipediaLink.textContent = wikipedia;
+    wikipediaLink.style.color = "white"; // Establecer el color del texto en blanco
+    wikipediaLink.style.marginLeft = "20px";
+    wikipediaLink.style.textDecoration = "underline"; // Subrayar el enlace
+    wikipediaLink.href = wikipedia; // Establecer el atributo href con el enlace de Wikipedia
+    wikipediaLink.style.fontSize = "9px";
+    // Abrir el enlace en una nueva pestaña
+    wikipediaLink.target = "_blank";
+
+    // Agregar el enlace al contenedor
+    divLast.appendChild(wikipediaLink);
 
     divWrapper.appendChild(divFirst);
     divWrapper.appendChild(divLast);

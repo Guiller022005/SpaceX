@@ -143,3 +143,33 @@ export const tableRocketColum2 = async (Rocket)=>{
         
     // </div>
 }
+
+export const tableCrewColum1 = async (Crew)=>{
+
+    let information__table__1 = document.querySelector("#information__table__1");
+    information__table__1.innerHTML = "";
+    let h3 = document.createElement("h3");
+    h3.textContent = "name"
+    let hr = document.createElement("hr");
+    information__table__1.append(h3, hr)
+
+    let div = document.createElement("div");
+    div.classList.add("table__container__1");
+    // 
+    let div1 = document.createElement("div");
+    let span1 = document.createElement("span");
+    span1.textContent = "status"
+    let strong1 = document.createElement("strong");
+    strong1.textContent = `${(Crew.active) ? "Active" : "Low" }`
+    div1.append(span1, strong1)
+
+    let div2 = document.createElement("div");
+    let span2 = document.createElement("span");
+    span1.textContent = "status"
+    let strong2 = document.createElement("strong");
+    strong2.textContent = `${Crew.agency}`
+    div2.append(span2, strong2)
+
+    div.append(div1, div2)
+    information__table__1.append(div)
+}

@@ -16,3 +16,12 @@ export const capsulesName = async (serial) => {
     }
 
 }
+
+export const crewNames = async (crews)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = crews;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}

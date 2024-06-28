@@ -14,13 +14,12 @@ export const capsulesName = async (serial) => {
     if (header__title.rainbowInterval) {
         clearInterval(header__title.rainbowInterval);
     }
+};
 
-}
-
-export const crewNames = async (crews)=>{
+export const crewNames = async (name)=>{
     let header__title = document.querySelector("#header__title");
     header__title.innerHTML = "";
-    header__title.textContent = crews;
+    header__title.textContent = name;
     if (header__title.rainbowInterval) {
         clearInterval(header__title.rainbowInterval);
     }

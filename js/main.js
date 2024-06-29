@@ -3,6 +3,7 @@ import {
     paginationRockets,
     paginationCapsules,
     paginationCrew,
+    paginationLaunche
 } from "./modulesComponents/pagination.js";
 
 let footerSelect = async(e, id)=>{
@@ -42,4 +43,12 @@ crew.addEventListener("click", async(e)=>{
     paginacion.append(await paginationCrew())
 })
 
-capsules.click();
+let launches = document.querySelector("#launches")
+launches.addEventListener("click", async(e)=>{
+    await footerSelect(e, launches)
+    let paginacion = document.querySelector("#paginacion");
+    paginacion.innerHTML = ""
+    paginacion.append(await paginationLaunche())
+})
+
+launches.click();

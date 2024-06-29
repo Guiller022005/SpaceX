@@ -6,7 +6,8 @@ import {
 import { 
     nameRockets,
     capsulesName,
-    crewNames
+    crewNames,
+    launchName
 } from "./title.js";
 ///
 import { 
@@ -51,6 +52,11 @@ import {
     getAllCrew,
     getAllCrew_Id
 } from "../modules/crew.js";
+////
+import {
+    getAllLaunch_Id,
+    getAll_launch
+} from "../modules/launches.js";
 
 
 export const load = async()=>{
@@ -98,6 +104,11 @@ export const load = async()=>{
         <div class="load"></div>
     `;
 }
+
+/**
+ Limpiando el contenido de la pag
+ */
+
 export const clear = async()=>{
     let header__title = document.querySelector("#header__title");
     header__title.innerHTML = ``;
@@ -122,6 +133,10 @@ export const clear = async()=>{
     information__2.innerHTML = ``;
 
 }
+
+/*
+  Actualización de la interfaz con la información del cohete
+ */
 
 const getRocketsId = async(e)=>{
     e.preventDefault();
@@ -155,6 +170,10 @@ const getRocketsId = async(e)=>{
     await progressSecondStageDiameterRocket(Rocket)
     await progressSecondStageHeightRocket(Rocket)
 }
+/**
+ Paginacion de la seccion cohetes,
+ */
+
 export const paginationRockets = async()=>{
     let rockets = await getAllRockets();
     let div = document.createElement("div");
@@ -183,6 +202,12 @@ export const paginationRockets = async()=>{
     return div;
 }
 
+
+/*
+  Actualización de la interfaz con la información de mis capsulas
+*/
+
+
 const getCapsulesId = async (e) => {
     e.preventDefault();
   
@@ -192,8 +217,8 @@ const getCapsulesId = async (e) => {
         paginacion.append(await paginationCapsules(Number(e.target.dataset.page)));
         setTimeout(() => {
             let paginacion = document.querySelector("#paginacion");
-            let a1 = paginacion.children[0].children[1];
-            a1.click();
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
         }, 200);
     }
   
@@ -211,6 +236,10 @@ const getCapsulesId = async (e) => {
   
     await capsulesName(capsules.serial);
 };
+
+/**
+ Paginacion de la seccion de mis capsulas..
+ */
 
 export const paginationCapsules = async(page=1, limit=4)=>{  
      
@@ -242,8 +271,8 @@ export const paginationCapsules = async(page=1, limit=4)=>{
     end.addEventListener("click", getCapsulesId)
     div.appendChild(end);
     console.log(div);
-    let [back, a1,a2,a3,a4, next] = div.children
-    a1.click();
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
     // <div class="buttom__paginacion">
     //     <a href="#">&laquo;</a> 
     //     <a href="#" class="activo">1</a>
@@ -255,6 +284,10 @@ export const paginationCapsules = async(page=1, limit=4)=>{
     return div;
 }
 
+/*
+  Actualización de la interfaz con la información de mi tripulacion
+*/
+
 const getCrewId = async (e) => {
     e.preventDefault();
   
@@ -264,8 +297,8 @@ const getCrewId = async (e) => {
         paginacion.append(await paginationCrew(Number(e.target.dataset.page)));
         setTimeout(() => {
             let paginacion = document.querySelector("#paginacion");
-            let a1 = paginacion.children[0].children[1];
-            a1.click();
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
         }, 200);
     }
   
@@ -283,6 +316,11 @@ const getCrewId = async (e) => {
   
     await crewNames(crew.name);
 };
+
+/**
+ Paginacion de la seccion de mis capsulas..
+*/
+
 
 export const paginationCrew = async(page=1, limit=4)=>{  
      
@@ -314,8 +352,87 @@ export const paginationCrew = async(page=1, limit=4)=>{
     end.addEventListener("click", getCrewId)
     div.appendChild(end);
     console.log(div);
-    let [back, a1,a2,a3,a4, next] = div.children
-    a1.click();
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+
+/*
+  Actualización de la interfaz con la información de mis launches
+*/
+
+const getAllLaunches_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationLaunche(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let launch = await getAllLaunch_Id(e.target.id);
+    console.log(launch);
+  
+    await launchName(launch.name);
+};
+
+
+/**
+ Paginacion de la seccion de mis launches..
+ */
+
+ export const paginationLaunche = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAll_launch(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllLaunches_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllLaunches_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllLaunches_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
     // <div class="buttom__paginacion">
     //     <a href="#">&laquo;</a> 
     //     <a href="#" class="activo">1</a>

@@ -33,3 +33,12 @@ export  const launchName = async (name)=>{
         clearInterval(header__title.rainbowInterval);
     }
 }
+
+export  const coreName = async (serial)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = serial;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}

@@ -11,7 +11,8 @@ import {
     coreSerial,
     landpadFullName,
     shipName,
-    companyName
+    companyName,
+    dragonName
 } from "./title.js";
 ///
 import { 
@@ -82,6 +83,12 @@ import {
     getAllCompany,
     getAllCompany_Id
 } from "../modules/company.js";
+///
+import {
+    getAll_YouDragon,
+    getAllDragon_Id
+}
+ from "../modules/dragon.js";
 
 /*Efecto de carga*/
 
@@ -710,4 +717,81 @@ export const paginationCompany = async() => {
     let data = await getAllCompany()
     await clear()
     await companyName(data.name);
+}
+
+/*
+  Actualización de la interfaz con la información de mi compañia
+*/
+
+const getAllDragon_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationDrago(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let ship = await getAllDragon_Id(e.target.id);
+    console.log(ship);
+  
+    await dragonName(ship.name);
+};
+
+/**
+ Paginacion de la seccion de mis barcoss..
+ */
+
+ export const paginationDrago = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAll_YouDragon(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllDragon_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllDragon_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllDragon_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
 }

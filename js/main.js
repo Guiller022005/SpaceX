@@ -11,7 +11,8 @@ import {
     paginationDrago,
     paginationHistories,
     paginationLaunches,
-    paginationPayoades
+    paginationPayoades,
+    paginationRoadster
 } from "./modulesComponents/pagination.js";
 
 let footerSelect = async(e, id)=>{
@@ -121,6 +122,14 @@ payload.addEventListener("click", async(e)=>{
     let paginacion = document.querySelector("#paginacion");
     paginacion.innerHTML = ""
     paginacion.append(await paginationPayoades())
+})
+
+let roadster = document.querySelector("#roadster")
+roadster.addEventListener("click", async(e)=>{
+    await footerSelect(e, roadster)
+    let paginacion = document.querySelector("#paginacion");
+    paginacion.innerHTML = ""
+    paginacion.append(await paginationRoadster())
 })
 
 history.click();

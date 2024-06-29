@@ -15,7 +15,8 @@ import {
     dragonName,
     historyTitle,
     launchpadfull_name,
-    payloadName
+    payloadName,
+    roadName
 } from "./title.js";
 ///
 import { 
@@ -107,7 +108,12 @@ import {
     getAll_payloads,
     getAllPayload_Id
  } from "../modules/payloads.js";
-
+///
+import {
+    getAll_roadster,
+    getAllRoadster_Id,
+    getAllRoadster
+} from "../modules/roadster.js"
 
 /*Efecto de carga*/
 
@@ -1001,6 +1007,10 @@ const getAllPayloads_ForId = async (e) => {
     await payloadName(payload.name);
 };
 
+/**
+ Paginacion de la seccion de mi historial de launchpads..
+ */
+
 export const paginationPayoades = async(page=1, limit= 5)=>{  
      
     let {docs, pagingCounter, totalPages, nextPage} = await getAll_payloads(page, limit)
@@ -1042,4 +1052,13 @@ export const paginationPayoades = async(page=1, limit= 5)=>{
     //     <a href="#">&raquo;</a>
     // </div>
     return div;
+}
+
+/*
+  Actualización de la interfaz con la información de mis Payloads
+*/
+export const paginationRoadster = async() => {
+    let data = await getAllRoadster()
+    await clear()
+    await roadName(data.name);
 }

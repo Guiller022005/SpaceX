@@ -106,3 +106,12 @@ export  const payloadName = async (name)=>{
         clearInterval(header__title.rainbowInterval);
     }
 }
+
+export  const roadName = async (name)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = name;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}

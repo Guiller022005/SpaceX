@@ -7,7 +7,7 @@ export const nameRockets = async(name)=>{
     }
 }
 
-export const capsulesName = async (serial) => {
+export const capsulesSerial = async (serial) => {
     let header__title = document.querySelector("#header__title");
     header__title.innerHTML = "";
     header__title.textContent = serial;
@@ -34,10 +34,28 @@ export  const launchName = async (name)=>{
     }
 }
 
-export  const coreName = async (serial)=>{
+export  const coreSerial = async (serial)=>{
     let header__title = document.querySelector("#header__title");
     header__title.innerHTML = "";
     header__title.textContent = serial;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}
+
+export  const landpadFullName = async (full_name)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = full_name;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}
+
+export  const shipName = async (name)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = name;
     if (header__title.rainbowInterval) {
         clearInterval(header__title.rainbowInterval);
     }

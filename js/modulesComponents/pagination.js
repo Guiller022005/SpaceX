@@ -5,10 +5,12 @@ import {
 ///
 import { 
     nameRockets,
-    capsulesName,
+    capsulesSerial,
     crewNames,
     launchName,
-    coreName
+    coreSerial,
+    landpadFullName,
+    shipName,
 } from "./title.js";
 ///
 import { 
@@ -63,7 +65,16 @@ import {
     getAllCore,
     getAllCore_Id
 } from "../modules/cores.js";
-
+///
+import {
+    getAllLandpads,
+    getAllLandpad_Id
+} from "../modules/landpads.js";
+///
+import {
+    getAllShips,
+    getAllships_Id
+} from "../modules/ships.js";
 
 /*Efecto de carga*/
 
@@ -242,7 +253,7 @@ const getCapsulesId = async (e) => {
     let description__item = document.querySelector("#description__item");
     description__item.innerHTML = "";
   
-    await capsulesName(capsules.serial);
+    await capsulesSerial(capsules.serial);
 };
 
 /**
@@ -479,7 +490,7 @@ const getAllCore_ForId = async (e) => {
     let cores = await getAllCore_Id(e.target.id);
     console.log(cores);
   
-    await coreName(cores.serial);
+    await coreSerial(cores.serial);
 };
 
 /**
@@ -514,6 +525,161 @@ const getAllCore_ForId = async (e) => {
     end.innerHTML = "&raquo;";
     end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
     end.addEventListener("click", getAllCore_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+/*
+  Actualización de la interfaz con la información de mis landpadss
+*/
+
+const getAlllandpad_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationLandpad(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let landpad = await getAllLandpad_Id(e.target.id);
+    console.log(landpad);
+  
+    await landpadFullName(landpad.full_name);
+};
+
+
+/**
+ Paginacion de la seccion de mis landpads..
+ */
+
+ export const paginationLandpad = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAllLandpads(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAlllandpad_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAlllandpad_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAlllandpad_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+/*
+  Actualización de la interfaz con la información de mis barcoss
+*/
+
+const getAllShips_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationShips(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let ship = await getAllships_Id(e.target.id);
+    console.log(ship);
+  
+    await shipName(ship.name);
+};
+
+/**
+ Paginacion de la seccion de mis landpads..
+ */
+
+ export const paginationShips = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAllShips(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllShips_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllShips_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllShips_ForId)
     div.appendChild(end);
     console.log(div);
     let [back, p1,p2,p3,p4, next] = div.children

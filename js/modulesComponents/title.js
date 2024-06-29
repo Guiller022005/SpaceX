@@ -80,3 +80,29 @@ export  const dragonName = async (name)=>{
     }
 }
 
+export  const historyTitle = async (title)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = title;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}
+
+export  const launchpadfull_name = async (full_name)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = full_name;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}
+
+export  const payloadName = async (name)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = name;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}

@@ -12,7 +12,10 @@ import {
     landpadFullName,
     shipName,
     companyName,
-    dragonName
+    dragonName,
+    historyTitle,
+    launchpadfull_name,
+    payloadName
 } from "./title.js";
 ///
 import { 
@@ -89,6 +92,22 @@ import {
     getAllDragon_Id
 }
  from "../modules/dragon.js";
+ ///
+ import {
+    getAll_HistoryMisions,
+    getAllHistoryMisions_Id
+ } from "../modules/history.js";
+ ///
+import { 
+    getAll_launchpads,
+    getAllLaunchpad_Id
+ } from "../modules/launchpads.js";
+///
+import { 
+    getAll_payloads,
+    getAllPayload_Id
+ } from "../modules/payloads.js";
+
 
 /*Efecto de carga*/
 
@@ -720,7 +739,7 @@ export const paginationCompany = async() => {
 }
 
 /*
-  Actualización de la interfaz con la información de mi compañia
+  Actualización de la interfaz con la información de mis naves dragon
 */
 
 const getAllDragon_ForId = async (e) => {
@@ -743,14 +762,14 @@ const getAllDragon_ForId = async (e) => {
     }
     e.target.classList.add('activo');
   
-    let ship = await getAllDragon_Id(e.target.id);
-    console.log(ship);
+    let dragon = await getAllDragon_Id(e.target.id);
+    console.log(dragon);
   
-    await dragonName(ship.name);
+    await dragonName(dragon.name);
 };
 
 /**
- Paginacion de la seccion de mis barcoss..
+ Paginacion de la seccion de mis naves Dragon..
  */
 
  export const paginationDrago = async(page=1, limit= 5)=>{  
@@ -781,6 +800,235 @@ const getAllDragon_ForId = async (e) => {
     end.innerHTML = "&raquo;";
     end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
     end.addEventListener("click", getAllDragon_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+/*
+  Actualización de la interfaz con la información de mi historial de misiones
+*/
+
+const getAllHistory_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationHistories(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let history = await getAllHistoryMisions_Id(e.target.id);
+    console.log(history);
+  
+    await historyTitle(history.title);
+};
+
+/**
+ Paginacion de la seccion de mi historial de misiones..
+ */
+
+ export const paginationHistories = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAll_HistoryMisions(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllHistory_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllHistory_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllHistory_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+
+
+/*
+  Actualización de la interfaz con la información de mis launchpads
+*/
+
+const getAllLaunchpads_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationLaunches(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let launch = await getAllLaunchpad_Id(e.target.id);
+    console.log(launch);
+  
+    await launchpadfull_name(launch.full_name);
+};
+
+/**
+ Paginacion de la seccion de mi historial de launchpads..
+ */
+
+ export const paginationLaunches = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAll_launchpads(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllLaunchpads_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllLaunchpads_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllLaunchpads_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
+}
+
+/*
+  Actualización de la interfaz con la información de mis Payloads
+*/
+
+const getAllPayloads_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationPayoades(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let payload = await getAllPayload_Id(e.target.id);
+    console.log(payload);
+  
+    await payloadName(payload.name);
+};
+
+export const paginationPayoades = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAll_payloads(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllPayloads_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllPayloads_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllPayloads_ForId)
     div.appendChild(end);
     console.log(div);
     let [back, p1,p2,p3,p4, next] = div.children

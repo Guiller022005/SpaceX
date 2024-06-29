@@ -8,7 +8,10 @@ import {
     paginationLandpad,
     paginationShips,
     paginationCompany,
-    paginationDrago
+    paginationDrago,
+    paginationHistories,
+    paginationLaunches,
+    paginationPayoades
 } from "./modulesComponents/pagination.js";
 
 let footerSelect = async(e, id)=>{
@@ -96,5 +99,28 @@ chimuelo.addEventListener("click", async(e)=>{
     paginacion.append(await paginationDrago())
 })
 
+let history = document.querySelector("#history")
+history.addEventListener("click", async(e)=>{
+    await footerSelect(e, history)
+    let paginacion = document.querySelector("#paginacion");
+    paginacion.innerHTML = ""
+    paginacion.append(await paginationHistories())
+})
 
-company.click();
+let launch = document.querySelector("#launchpads")
+launch.addEventListener("click", async(e)=>{
+    await footerSelect(e, launch)
+    let paginacion = document.querySelector("#paginacion");
+    paginacion.innerHTML = ""
+    paginacion.append(await paginationLaunches())
+})
+
+let payload = document.querySelector("#payloads")
+payload.addEventListener("click", async(e)=>{
+    await footerSelect(e, payload)
+    let paginacion = document.querySelector("#paginacion");
+    paginacion.innerHTML = ""
+    paginacion.append(await paginationPayoades())
+})
+
+history.click();

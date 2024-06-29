@@ -16,7 +16,8 @@ import {
     historyTitle,
     launchpadfull_name,
     payloadName,
-    roadName
+    roadName,
+    starlinkName
 } from "./title.js";
 ///
 import { 
@@ -114,6 +115,11 @@ import {
     getAllRoadster_Id,
     getAllRoadster
 } from "../modules/roadster.js"
+///
+import {
+    getAll_starlinks,
+    getAllstarlink_Id
+} from "../modules/starlink.js";
 
 /*Efecto de carga*/
 
@@ -1055,10 +1061,88 @@ export const paginationPayoades = async(page=1, limit= 5)=>{
 }
 
 /*
-  Actualización de la interfaz con la información de mis Payloads
+  Actualización de la interfaz con la información de mis roadster
 */
 export const paginationRoadster = async() => {
     let data = await getAllRoadster()
     await clear()
     await roadName(data.name);
+}
+
+
+/*
+  Actualización de la interfaz con la información de mis starlinks
+*/
+
+const getAllstarlinks_ForId = async (e) => {
+    e.preventDefault();
+  
+    if(e.target.dataset.page){
+        let paginacion = document.querySelector("#paginacion");
+        paginacion.innerHTML = "";
+        paginacion.append(await paginationStarlinks(Number(e.target.dataset.page)));
+        setTimeout(() => {
+            let paginacion = document.querySelector("#paginacion");
+            let p1 = paginacion.children[0].children[1];
+            p1.click();
+        }, 200);
+    }
+  
+    let a = e.target.parentElement.children;
+    for (let val of a) {
+      val.classList.remove('activo');
+    }
+    e.target.classList.add('activo');
+  
+    let starl = await getAllstarlink_Id(e.target.id);
+    console.log(starl);
+  
+    await starlinkName(starl.spaceTrack.OBJECT_NAME);
+};
+
+/**
+ Paginacion de la seccion de mi historial de starlinks..
+ */
+
+ export const paginationStarlinks = async(page=1, limit= 5)=>{  
+     
+    let {docs, pagingCounter, totalPages, nextPage} = await getAll_starlinks(page, limit)
+
+    let div = document.createElement("div");
+    div.classList.add("buttom__paginacion")
+
+    
+    let start = document.createElement("a");
+    start.setAttribute("href","#");
+    start.innerHTML = "&laquo";
+    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
+    start.addEventListener("click", getAllstarlinks_ForId)
+    div.appendChild(start);
+    docs.forEach((val,id) => {
+        let a = document.createElement("a");
+        a.setAttribute("href","#");
+        a.id = val.id;
+        a.textContent = pagingCounter;
+        a.addEventListener("click", getAllstarlinks_ForId)
+        div.appendChild(a);
+        pagingCounter++
+    });
+    let end = document.createElement("a");
+    end.setAttribute("href","#");
+    end.innerHTML = "&raquo;";
+    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
+    end.addEventListener("click", getAllstarlinks_ForId)
+    div.appendChild(end);
+    console.log(div);
+    let [back, p1,p2,p3,p4, next] = div.children
+    p1.click();
+    // <div class="buttom__paginacion">
+    //     <a href="#">&laquo;</a> 
+    //     <a href="#" class="activo">1</a>
+    //     <a href="#">2</a>
+    //     <a href="#">3</a>
+    //     <a href="#">4</a>
+    //     <a href="#">&raquo;</a>
+    // </div>
+    return div;
 }

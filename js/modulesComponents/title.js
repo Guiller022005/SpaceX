@@ -115,3 +115,12 @@ export  const roadName = async (name)=>{
         clearInterval(header__title.rainbowInterval);
     }
 }
+
+export  const starlinkName = async (OBJECT_NAME)=>{
+    let header__title = document.querySelector("#header__title");
+    header__title.innerHTML = "";
+    header__title.textContent = OBJECT_NAME;
+    if (header__title.rainbowInterval) {
+        clearInterval(header__title.rainbowInterval);
+    }
+}

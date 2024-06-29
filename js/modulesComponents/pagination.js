@@ -11,6 +11,7 @@ import {
     coreSerial,
     landpadFullName,
     shipName,
+    companyName
 } from "./title.js";
 ///
 import { 
@@ -75,6 +76,12 @@ import {
     getAllShips,
     getAllships_Id
 } from "../modules/ships.js";
+///
+import {
+    getAllCompanys,
+    getAllCompany,
+    getAllCompany_Id
+} from "../modules/company.js";
 
 /*Efecto de carga*/
 
@@ -649,7 +656,7 @@ const getAllShips_ForId = async (e) => {
 };
 
 /**
- Paginacion de la seccion de mis landpads..
+ Paginacion de la seccion de mis barcoss..
  */
 
  export const paginationShips = async(page=1, limit= 5)=>{  
@@ -693,4 +700,14 @@ const getAllShips_ForId = async (e) => {
     //     <a href="#">&raquo;</a>
     // </div>
     return div;
+}
+
+/*
+  Actualización de la interfaz con la información de mi compañia
+*/
+
+export const paginationCompany = async() => {
+    let data = await getAllCompany()
+    await clear()
+    await companyName(data.name);
 }

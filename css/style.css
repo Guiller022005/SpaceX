@@ -35,6 +35,8 @@ body {
     background-color: var(--color--one--rgba);
 }
 
+
+
 .header__title {
     /* background: red; */
     color: var(--color--five);
@@ -53,6 +55,10 @@ body {
     width: 100%;
     margin: 12px 0;
     height: 100px;
+    color: var(--color--five);
+}
+p{
+    margin: 10px;
 }
 @keyframes load{
     100%{

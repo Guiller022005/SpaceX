@@ -272,7 +272,47 @@ export const paginationRockets = async()=>{
 */
 
 
-const getCapsulesId = async (e) => {
+const extractCapsuleData = (capsule) => {
+    return {
+      type: capsule.type,
+      status: capsule.status,
+      id: capsule.id,
+      reuse_count: capsule.reuse_count,
+      water_landings: capsule.water_landings,
+      land_landings: capsule.land_landings,
+      last_update: capsule.last_update,
+      launches: capsule.launches.join(", ") // concatenamos los lanzamientos en una cadena separada por comas
+    };
+  };
+  
+  
+  const displayCapsuleData = (capsuleData) => {
+    document.querySelector("#section__information__1 .load").innerHTML = `
+      <p>Type: ${capsuleData.type}</p>
+      <p>Status: ${capsuleData.status}</p>
+      <p>id: ${capsuleData.id}</p>
+    `;
+    
+
+    let information2Divs = document.querySelectorAll("#information__2 .load");
+    information2Divs[0].innerHTML = `<p>Reuse Count: ${capsuleData.reuse_count}</p>`;
+    information2Divs[1].innerHTML = `<p>Water Landings: ${capsuleData.water_landings}</p>`;
+    information2Divs[2].innerHTML = `<p>Land Landings: ${capsuleData.land_landings}</p>`;
+
+    document.querySelector("#section__image .load").innerHTML = `
+    <img src="storage/img/icons/capsulas.jpg" style="width: 100%; height: 100%; object-fit: cover;">`;
+
+    document.querySelector("#information__table__1 .load").innerHTML = `
+      <p>Launches: ${capsuleData.launches}</p>
+    `;
+
+    document.querySelector("#information__table__2 .load").innerHTML = `
+      <p>Last Update: ${capsuleData.last_update}</p>
+    `;
+};
+
+  
+  const getCapsulesId = async (e) => {
     e.preventDefault();
   
     if(e.target.dataset.page){
@@ -294,6 +334,9 @@ const getCapsulesId = async (e) => {
   
     let capsules = await getAllCapsules_Id(e.target.id);
     console.log(capsules);
+  
+    let capsuleData = extractCapsuleData(capsules);
+    displayCapsuleData(capsuleData);
   
     let description__item = document.querySelector("#description__item");
     description__item.innerHTML = "";

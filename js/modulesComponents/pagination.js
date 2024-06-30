@@ -287,29 +287,52 @@ const extractCapsuleData = (capsule) => {
   
   
   const displayCapsuleData = (capsuleData) => {
-    document.querySelector("#section__information__1 .load").innerHTML = `
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
       <p>Type: ${capsuleData.type}</p>
       <p>Status: ${capsuleData.status}</p>
       <p>id: ${capsuleData.id}</p>
     `;
-    
-
+    section1Load.classList.remove('hidden');
+  
     let information2Divs = document.querySelectorAll("#information__2 .load");
-    information2Divs[0].innerHTML = `<p>Reuse Count: ${capsuleData.reuse_count}</p>`;
-    information2Divs[1].innerHTML = `<p>Water Landings: ${capsuleData.water_landings}</p>`;
-    information2Divs[2].innerHTML = `<p>Land Landings: ${capsuleData.land_landings}</p>`;
-
-    document.querySelector("#section__image .load").innerHTML = `
-    <img src="storage/img/icons/capsulas.jpg" style="width: 100%; height: 100%; object-fit: cover;">`;
-
-    document.querySelector("#information__table__1 .load").innerHTML = `
-      <p>Launches: ${capsuleData.launches}</p>
+    const infoContents = [
+      `<p>Reuse Count: ${capsuleData.reuse_count}</p>`,
+      `<p>Water Landings: ${capsuleData.water_landings}</p>`,
+      `<p>Land Landings: ${capsuleData.land_landings}</p>`
+    ];
+  
+    infoContents.forEach((content, index) => {
+      information2Divs[index].innerHTML = content;
+      information2Divs[index].classList.remove('hidden');
+    });
+  
+    // Ocultar los últimos dos divs vacíos
+    information2Divs[3].classList.add('hidden');
+    information2Divs[4].classList.add('hidden');
+  
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+      <img src="storage/img/icons/capsulas.jpg" style="width: 100%; height: 100%; object-fit: cover;">
     `;
-
-    document.querySelector("#information__table__2 .load").innerHTML = `
-      <p>Last Update: ${capsuleData.last_update}</p>
-    `;
-};
+    sectionImageLoad.classList.remove('hidden');
+  
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `<p>Launches: ${capsuleData.launches}</p>`;
+    if (!capsuleData.launches) {
+      informationTable1Load.classList.add('hidden');
+    } else {
+      informationTable1Load.classList.remove('hidden');
+    }
+  
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `<p>Last Update: ${capsuleData.last_update}</p>`;
+    if (!capsuleData.last_update) {
+      informationTable2Load.classList.add('hidden');
+    } else {
+      informationTable2Load.classList.remove('hidden');
+    }
+  };
 
   
   const getCapsulesId = async (e) => {

@@ -753,6 +753,79 @@ const getAllLaunches_ForId = async (e) => {
     return div;
 }
 
+const extractCoreData = (core) => {
+    return {
+        block: core.block,
+        reuse_count: core.reuse_count,
+        rtls_attempts: core.rtls_attempts,
+        rtls_landings: core.rtls_landings,
+        asds_attempts: core.asds_attempts,
+        asds_landings: core.asds_landings,
+        last_update: core.last_update,
+        launches: core.launches,
+        status: core.status,
+        id: core.id
+    };
+};
+
+const displayCoreData = (coresData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+    <p>Status: ${coresData.status}</p>
+    <p>ID: ${coresData.id}</p>
+    <p>Block: ${coresData.block}</p>
+    `;
+    
+    section1Load.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p>Rtls_attempts: ${coresData.rtls_attempts}</p>
+        <p>Drtls_landings: ${coresData.rtls_landings}</p>
+        
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+        <p>Launches: ${coresData.launches}</p>
+        
+    `;
+    informationTable2Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/cores.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    `;
+    sectionImageLoad.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+
+    // Clear previous content if any
+    information__2Load.innerHTML = "";
+
+    const Asds_attemptsLoad = document.createElement('div');
+    Asds_attemptsLoad.classList.add('load');
+    Asds_attemptsLoad.innerHTML = `
+        <p>Asds_attempts: ${coresData.asds_attempts}</p>
+    `;
+    information__2Load.appendChild(Asds_attemptsLoad);
+
+    const asds_landingsLoad = document.createElement('div');
+    asds_landingsLoad.classList.add('load');
+    asds_landingsLoad.innerHTML = `
+        <p>Asds_landings: ${coresData.asds_landings}</p>
+    `;
+    information__2Load.appendChild(asds_landingsLoad);
+
+    const reuse_countLoad = document.createElement('div');
+    reuse_countLoad.classList.add('load');
+    reuse_countLoad.innerHTML = `
+        <p>Reuse_count: ${coresData.reuse_count}</p>
+    `;
+    information__2Load.appendChild(reuse_countLoad);
+};
+
 /*
   Actualización de la interfaz con la información de mis coress
 */
@@ -779,6 +852,9 @@ const getAllCore_ForId = async (e) => {
   
     let cores = await getAllCore_Id(e.target.id);
     console.log(cores);
+
+    let coresData = extractCoreData(cores);
+    displayCoreData(coresData);
   
     await coreSerial(cores.serial);
 };

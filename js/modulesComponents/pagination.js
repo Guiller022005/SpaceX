@@ -414,14 +414,62 @@ export const paginationCapsules = async(page=1, limit=4)=>{
     return div;
 }
 
+const extractCrewData = (crew) => {
+    return {
+        agency: crew.agency,
+        image: crew.image,
+        wikipedia: crew.wikipedia,
+        launches: crew.launches.join(", "), // concatenamos los lanzamientos en una cadena separada por comas
+        status: crew.status,
+        id: crew.id
+    };
+};
+
+
+
+const displayCrewData = (crewData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+        <p>Agency: ${crewData.agency}</p>
+        <p>Status: ${crewData.status}</p>
+        <p>ID: ${crewData.id}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <img src="${crewData.image}" style="width: 100%; height: 100%; object-fit: cover;" alt="${crewData.agency}" />
+    `;
+    sectionImageLoad.style.height = "450px"; // Ajuste de altura a 400px
+    sectionImageLoad.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+    
+        <p>Launches: ${crewData.launches}</p>
+    `;
+    informationTable2Load.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p><a href="${crewData.wikipedia}" target="_blank">Wikipedia</a></p>
+        
+    `;
+    informationTable1Load.classList.remove('hidden');
+};
+
+
+
+
+
 /*
   Actualización de la interfaz con la información de mi tripulacion
 */
 
 const getCrewId = async (e) => {
     e.preventDefault();
-  
-    if(e.target.dataset.page){
+
+    if (e.target.dataset.page) {
         let paginacion = document.querySelector("#paginacion");
         paginacion.innerHTML = "";
         paginacion.append(await paginationCrew(Number(e.target.dataset.page)));
@@ -431,69 +479,69 @@ const getCrewId = async (e) => {
             p1.click();
         }, 200);
     }
-  
+
     let a = e.target.parentElement.children;
     for (let val of a) {
-      val.classList.remove('activo');
+        val.classList.remove('activo');
     }
     e.target.classList.add('activo');
-  
+
     let crew = await getAllCrew_Id(e.target.id);
     console.log(crew);
-  
+
+    let crewData = extractCrewData(crew);
+    displayCrewData(crewData);
+
     let description__item = document.querySelector("#description__item");
     description__item.innerHTML = "";
-  
+
     await crewNames(crew.name);
 };
+
+
 
 /**
  Paginacion de la seccion de mis capsulas..
 */
 
 
-export const paginationCrew = async(page=1, limit=4)=>{  
-     
-    let {docs, pagingCounter, totalPages, nextPage} = await getAllCrew(page, limit)
+export const paginationCrew = async (page = 1, limit = 4) => {
+    let { docs, pagingCounter, totalPages, nextPage } = await getAllCrew(page, limit);
 
     let div = document.createElement("div");
-    div.classList.add("buttom__paginacion")
+    div.classList.add("buttom__paginacion");
 
-    
     let start = document.createElement("a");
-    start.setAttribute("href","#");
+    start.setAttribute("href", "#");
     start.innerHTML = "&laquo";
-    start.setAttribute("data-page", (page==1) ? totalPages : page-1)
-    start.addEventListener("click", getCrewId)
+    start.setAttribute("data-page", (page == 1) ? totalPages : page - 1);
+    start.addEventListener("click", getCrewId);
     div.appendChild(start);
-    docs.forEach((val,id) => {
+
+    docs.forEach((val, id) => {
         let a = document.createElement("a");
-        a.setAttribute("href","#");
+        a.setAttribute("href", "#");
         a.id = val.id;
         a.textContent = pagingCounter;
-        a.addEventListener("click", getCrewId)
+        a.addEventListener("click", getCrewId);
         div.appendChild(a);
-        pagingCounter++
+        pagingCounter++;
     });
+
     let end = document.createElement("a");
-    end.setAttribute("href","#");
+    end.setAttribute("href", "#");
     end.innerHTML = "&raquo;";
-    end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
-    end.addEventListener("click", getCrewId)
+    end.setAttribute("data-page", (page && nextPage) ? page + 1 : 1);
+    end.addEventListener("click", getCrewId);
     div.appendChild(end);
+
     console.log(div);
-    let [back, p1,p2,p3,p4, next] = div.children
+    let [back, p1, p2, p3, p4, next] = div.children;
     p1.click();
-    // <div class="buttom__paginacion">
-    //     <a href="#">&laquo;</a> 
-    //     <a href="#" class="activo">1</a>
-    //     <a href="#">2</a>
-    //     <a href="#">3</a>
-    //     <a href="#">4</a>
-    //     <a href="#">&raquo;</a>
-    // </div>
+
     return div;
-}
+};
+
 
 
 /*

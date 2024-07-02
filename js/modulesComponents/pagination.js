@@ -438,7 +438,7 @@ const displayCrewData = (crewData) => {
 
     const sectionImageLoad = document.querySelector("#section__image .load");
     sectionImageLoad.innerHTML = `
-        <img src="${crewData.image}" style="width: 100%; height: 100%; object-fit: cover;" alt="${crewData.agency}" />
+        <img src="${crewData.image}" style="width: 100%; height: 100%; object-fit: cover;" alt="${crewData.agency}" <img src="https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg" referrerpolicy="no-referrer">/>
     `;
     sectionImageLoad.style.height = "450px"; // Ajuste de altura a 400px
     sectionImageLoad.classList.remove('hidden');
@@ -542,6 +542,130 @@ export const paginationCrew = async (page = 1, limit = 4) => {
     return div;
 };
 
+const extractLaunchData = (launch) => {
+    return {
+        flight_number: launch.flight_number,
+        name: launch.name,
+        date_utc: launch.date_utc,
+        date_unix: launch.date_unix,
+        date_local: launch.date_local,
+        date_precision: launch.date_precision,
+        upcoming: launch.upcoming,
+        rocket: launch.rocket,
+        success: launch.success,
+        failures: (launch.failures || []).map(failure => ({
+            time: failure.time,
+            altitude: failure.altitude,
+            reason: failure.reason
+        })),
+        details: launch.details,
+        crew: (launch.crew || []).join(", "),
+        ships: (launch.ships || []).join(", "),
+        capsules: (launch.capsules || []).join(", "),
+        payloads: (launch.payloads || []).join(", "),
+        launchpad: launch.launchpad,
+        auto_update: launch.auto_update,
+        static_fire_date_utc: launch.static_fire_date_utc,
+        static_fire_date_unix: launch.static_fire_date_unix,
+        links: {
+            patch: launch.links?.patch?.small || 'default_image.jpg',
+            reddit: {
+                campaign: launch.links?.reddit?.campaign,
+                launch: launch.links?.reddit?.launch,
+                media: launch.links?.reddit?.media,
+                recovery: launch.links?.reddit?.recovery
+            },
+            flickr: {
+                small: launch.links?.flickr?.small,
+                original: launch.links?.flickr?.original
+            },
+            presskit: launch.links?.presskit,
+            webcast: launch.links?.webcast,
+            youtube_id: launch.links?.youtube_id,
+            article: launch.links?.article,
+            wikipedia: launch.links?.wikipedia
+        },
+        id: launch.id
+    };
+};
+
+const displayLaunchData = (launchData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+        <p>Details: ${launchData.details || "No details available"}</p>
+        <p>Flight Number: ${launchData.flight_number}</p>
+        <p>Rocket: ${launchData.rocket}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+
+    // Clear previous content if any
+    information__2Load.innerHTML = "";
+
+    // Create separate <div class="load"> for each link and detail
+    if (launchData.links.wikipedia) {
+        const wikipediaLoad = document.createElement('div');
+        wikipediaLoad.classList.add('load');
+        wikipediaLoad.innerHTML = `<p><a href="${launchData.links.wikipedia}" target="_blank">Wikipedia</a></p>`;
+        information__2Load.appendChild(wikipediaLoad);
+    }
+
+    if (launchData.links.webcast) {
+        const webcastLoad = document.createElement('div');
+        webcastLoad.classList.add('load');
+        webcastLoad.innerHTML = `<p><a href="${launchData.links.webcast}" target="_blank">Webcast</a></p>`;
+        information__2Load.appendChild(webcastLoad);
+    }
+
+    if (launchData.links.article) {
+        const articleLoad = document.createElement('div');
+        articleLoad.classList.add('load');
+        articleLoad.innerHTML = `<p><a href="${launchData.links.article}" target="_blank">Article</a></p>`;
+        information__2Load.appendChild(articleLoad);
+    }
+
+    const staticFireLoad = document.createElement('div');
+    staticFireLoad.classList.add('load');
+    staticFireLoad.innerHTML = `
+        <p>Static Fire Date (UTC): ${launchData.static_fire_date_utc || "N/A"}</p>
+    `;
+    information__2Load.appendChild(staticFireLoad);
+
+    const failuresLoad = document.createElement('div');
+    failuresLoad.classList.add('load');
+    failuresLoad.innerHTML = `
+        <p>Failures: ${launchData.failures.length > 0 ? launchData.failures.map(failure => failure.reason).join(', ') : "None"}</p>
+    `;
+    information__2Load.appendChild(failuresLoad);
+
+    // Show the section
+    information__2Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/launches.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    `;
+    sectionImageLoad.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p>Date (UTC): ${launchData.date_utc}</p>
+        <p>Date Local: ${launchData.date_local}</p>
+        
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+        <p>Success: ${launchData.success ? "Yes" : "No"}</p>
+        <p>Upcoming: ${launchData.upcoming ? "Yes" : "No"}</p>
+        <p>Crew: ${launchData.crew}</p>
+        
+    `;
+    informationTable2Load.classList.remove('hidden');
+};
+
 
 
 /*
@@ -570,6 +694,13 @@ const getAllLaunches_ForId = async (e) => {
   
     let launch = await getAllLaunch_Id(e.target.id);
     console.log(launch);
+
+    let launchData = extractLaunchData(launch);
+    displayLaunchData(launchData);
+
+    let description__item = document.querySelector("#description__item");
+    description__item.innerHTML = "";
+    
   
     await launchName(launch.name);
 };

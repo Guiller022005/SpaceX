@@ -1436,6 +1436,165 @@ export const paginationCompany = async () => {
     }
 };
 
+const extractDragonData = (dragon) => {
+    return {
+        heat_shield: {
+            material: dragon.heat_shield.material,
+            size_meters: dragon.heat_shield.size_meters,
+            temp_degrees: dragon.heat_shield.temp_degrees,
+            dev_partner: dragon.heat_shield.dev_partner,
+        },
+        launch_payload_mass: {
+            kg: dragon.launch_payload_mass.kg,
+            lb: dragon.launch_payload_mass.lb,
+        },
+        launch_payload_vol: {
+            cubic_meters: dragon.launch_payload_vol.cubic_meters,
+            cubic_feet: dragon.launch_payload_vol.cubic_feet,
+        },
+        return_payload_mass: {
+            kg: dragon.return_payload_mass.kg,
+            lb: dragon.return_payload_mass.lb,
+        },
+        return_payload_vol: {
+            cubic_meters: dragon.return_payload_vol.cubic_meters,
+            cubic_feet: dragon.return_payload_vol.cubic_feet,
+        },
+        pressurized_capsule: {
+            payload_volume: {
+                cubic_meters: dragon.pressurized_capsule.payload_volume.cubic_meters,
+                cubic_feet: dragon.pressurized_capsule.payload_volume.cubic_feet,
+            }
+        },
+        trunk: {
+            trunk_volume: {
+                cubic_meters: dragon.trunk.trunk_volume.cubic_meters,
+                cubic_feet: dragon.trunk.trunk_volume.cubic_feet,
+            },
+            cargo: {
+                solar_array: dragon.trunk.cargo.solar_array,
+                unpressurized_cargo: dragon.trunk.cargo.unpressurized_cargo,
+            }
+        },
+        height_w_trunk: {
+            meters: dragon.height_w_trunk.meters,
+            feet: dragon.height_w_trunk.feet,
+        },
+        diameter: {
+            meters: dragon.diameter.meters,
+            feet: dragon.diameter.feet,
+        },
+        first_flight: dragon.first_flight,
+        flickr_images: dragon.flickr_images,
+        name: dragon.name,
+        type: dragon.type,
+        active: dragon.active,
+        crew_capacity: dragon.crew_capacity,
+        sidewall_angle_deg: dragon.sidewall_angle_deg,
+        orbit_duration_yr: dragon.orbit_duration_yr,
+        dry_mass_kg: dragon.dry_mass_kg,
+        dry_mass_lb: dragon.dry_mass_lb,
+        thrusters: dragon.thrusters.map(thruster => ({
+            type: thruster.type,
+            amount: thruster.amount,
+            pods: thruster.pods,
+            fuel_1: thruster.fuel_1,
+            fuel_2: thruster.fuel_2,
+            isp: thruster.isp,
+            thrust: {
+                kN: thruster.thrust.kN,
+                lbf: thruster.thrust.lbf,
+            }
+        })),
+        wikipedia: dragon.wikipedia,
+        description: dragon.description,
+        id: dragon.id,
+    };
+};
+
+const displayDragonData = (DragonData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+        <p>Type: ${DragonData.type}</p>
+        <ul>Thrusters:
+            ${DragonData.thrusters.map(thruster => `<li>${thruster.type}</li>`).join('')}
+        </ul>
+        <p>ID: ${DragonData.id}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p>Active: ${DragonData.active}</p>
+        <p>Crew Capacity: ${DragonData.crew_capacity}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+        <ul>Thrusters:
+            ${DragonData.thrusters.map(thruster => `<li>${thruster.type}</li>`).join('')}
+        </ul>
+        <p>Crew Capacity: ${DragonData.crew_capacity}</p>
+    `;
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
+    informationTable2Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <div style="display: flex; overflow-x: auto; width: 100%; height: 100%;">
+            ${DragonData.flickr_images.map(img => `
+                <img src="${img}" style="flex-shrink: 0; width: auto; height: 100%; object-fit: cover; margin-right: 10px;" referrerpolicy="no-referrer">
+            `).join('')}
+        </div>
+    `;
+    sectionImageLoad.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+
+    // Clear previous content if any
+    information__2Load.innerHTML = "";
+
+    const orbitDurationLoad = document.createElement('div');
+    orbitDurationLoad.classList.add('load');
+    orbitDurationLoad.innerHTML = `
+        <p>Orbit Duration (yr): ${DragonData.orbit_duration_yr}</p>
+    `;
+    information__2Load.appendChild(orbitDurationLoad);
+
+    const dryMassLoad = document.createElement('div');
+    dryMassLoad.classList.add('load');
+    dryMassLoad.innerHTML = `
+        <p>Dry Mass (kg): ${DragonData.dry_mass_kg}</p>
+    `;
+    information__2Load.appendChild(dryMassLoad);
+
+    const landingSuccessesLoad = document.createElement('div');
+    landingSuccessesLoad.classList.add('load');
+    landingSuccessesLoad.innerHTML = `
+        <p>Landing Successes: ${DragonData.landing_successes}</p>
+    `;
+    information__2Load.appendChild(landingSuccessesLoad);
+
+    if (DragonData.wikipedia) {
+        const wikipediaLoad = document.createElement('div');
+        wikipediaLoad.classList.add('load');
+        wikipediaLoad.innerHTML = `
+            <p>Wikipedia: <a href="${DragonData.wikipedia}" target="_blank">Wikipedia</a></p>
+        `;
+        information__2Load.appendChild(wikipediaLoad);
+    }
+
+    const descriptionLoad = document.createElement('div');
+    descriptionLoad.classList.add('load');
+    descriptionLoad.innerHTML = `
+        <p>Description: ${DragonData.description}</p>
+    `;
+    information__2Load.appendChild(descriptionLoad);
+};
+
+
 
 
 /*
@@ -1464,6 +1623,9 @@ const getAllDragon_ForId = async (e) => {
   
     let dragon = await getAllDragon_Id(e.target.id);
     console.log(dragon);
+
+    let dragonData = extractDragonData(dragon);
+    displayDragonData(dragonData);
   
     await dragonName(dragon.name);
 };

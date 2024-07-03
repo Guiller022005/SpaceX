@@ -1677,6 +1677,54 @@ const getAllDragon_ForId = async (e) => {
     return div;
 }
 
+const extractHistoryEventData = (historyEvent) => {
+    return {
+        title: historyEvent.title,
+        event_date_utc: historyEvent.event_date_utc,
+        event_date_unix: historyEvent.event_date_unix,
+        details: historyEvent.details,
+        article_link: historyEvent.links.article
+    };
+};
+
+const displayHistoryData = (historyData) => {
+    const section1Load = document.querySelector("#section__information__1");
+    section1Load.innerHTML = `
+        <p>Details: ${historyData.details}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image ");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/history.webp" style="width: 100%; height: 100%; object-fit: contain;" referrerpolicy="no-referrer">
+    `;
+    sectionImageLoad.style.height = "450px"; // Ajuste de altura a 450px
+    sectionImageLoad.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2");
+    informationTable2Load.innerHTML = `
+        <p>Event Date (UTC): ${historyData.event_date_utc}</p>
+    `;
+    informationTable2Load.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1");
+    informationTable1Load.innerHTML = `
+        <p>Event Date (Unix): ${historyData.event_date_unix}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+
+    // Clear previous content if any
+    information__2Load.innerHTML = "";
+    const articleLinkDiv = document.createElement('div');
+    articleLinkDiv.classList.add('load');
+    articleLinkDiv.innerHTML = `
+        <p>Article Link: <a href="${historyData.article_link}" target="_blank">${historyData.article_link}</a></p>
+    `;
+    information__2Load.appendChild(articleLinkDiv);
+};
+
 /*
   Actualización de la interfaz con la información de mi historial de misiones
 */
@@ -1703,7 +1751,10 @@ const getAllHistory_ForId = async (e) => {
   
     let history = await getAllHistoryMisions_Id(e.target.id);
     console.log(history);
-  
+    
+    let historyData = extractHistoryEventData(history);
+    displayHistoryData(historyData);
+
     await historyTitle(history.title);
 };
 

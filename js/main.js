@@ -141,4 +141,4 @@ starl.addEventListener("click", async(e)=>{
     paginacion.append(await paginationStarlinks())
 })
 
-company.click();
+history.click();

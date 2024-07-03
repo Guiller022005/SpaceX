@@ -1085,6 +1085,120 @@ const getAlllandpad_ForId = async (e) => {
     return div;
 }
 
+const extractShipData = (ship) => {
+    return {
+        legacy_id: ship.legacy_id,
+        model: ship.model,
+        type: ship.type,
+        roles: ship.roles,
+        imo: ship.imo,
+        mmsi: ship.mmsi,
+        abs: ship.abs,
+        class: ship.class,
+        mass_kg: ship.mass_kg,
+        mass_lbs: ship.mass_lbs,
+        year_built: ship.year_built,
+        home_port: ship.home_port,
+        status: ship.status,
+        speed_kn: ship.speed_kn,
+        course_deg: ship.course_deg,
+        latitude: ship.latitude,
+        longitude: ship.longitude,
+        last_ais_update: ship.last_ais_update,
+        link: ship.link,
+        image: ship.image,
+        launches: ship.launches,
+        active: ship.active,
+        id: ship.id
+    };
+};
+
+const displayShipData = (shipData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+    <p>Model: ${shipData.model}</p>
+    <p>Active: ${shipData.active}</p>
+    <p>ID: ${shipData.id}</p>
+    <p><a href="${shipData.link}" target="_blank">link</a></p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <img src="${shipData.image}" style="width: 100%; height: 100%; object-fit: cover;" alt="${shipData.agency}" <img src="https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg" referrerpolicy="no-referrer">
+    `;
+    sectionImageLoad.style.height = "450px"; // Ajuste de altura a 400px
+    sectionImageLoad.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+    
+        <p>Legacy_id: ${shipData.legacy_id}</p>
+    `;
+    informationTable2Load.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+    <p>Legacy_id: ${shipData.last_ais_update}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+
+    // Clear previous content if any
+    information__2Load.innerHTML = "";
+
+    const mass_kgLoad = document.createElement('div');
+    mass_kgLoad.classList.add('load');
+    mass_kgLoad.innerHTML = `
+        <p>Mass_kg: ${shipData.mass_kg}</p>
+    `;
+    information__2Load.appendChild(mass_kgLoad);
+
+    const mass_lbsLoad = document.createElement('div');
+    mass_lbsLoad.classList.add('load');
+    mass_lbsLoad.innerHTML = `
+        <p>Mass_lbs: ${shipData.mass_lbs}</p>
+    `;
+    information__2Load.appendChild(mass_lbsLoad);
+
+    const speed_knLoad = document.createElement('div');
+    speed_knLoad.classList.add('load');
+    speed_knLoad.innerHTML = `
+        <p>Speed_kn: ${shipData.speed_kn}</p>
+    `;
+    information__2Load.appendChild(speed_knLoad);
+
+    const course_degLoad = document.createElement('div');
+    course_degLoad.classList.add('load');
+    course_degLoad.innerHTML = `
+        <p>Speed_kn: ${shipData.course_deg}</p>
+    `;
+    information__2Load.appendChild(course_degLoad);
+
+    const latitudeLoad = document.createElement('div');
+    latitudeLoad.classList.add('load');
+    latitudeLoad.innerHTML = `
+        <p>Speed_kn: ${shipData.latitude}</p>
+    `;
+    information__2Load.appendChild(latitudeLoad);
+
+    const longitudeLoad = document.createElement('div');
+    longitudeLoad.classList.add('load');
+    longitudeLoad.innerHTML = `
+        <p>Speed_kn: ${shipData.longitude}</p>
+    `;
+    information__2Load.appendChild(longitudeLoad);
+
+    const launchesLoad = document.createElement('div');
+    launchesLoad.classList.add('load');
+    launchesLoad.innerHTML = `
+        <p>Speed_kn: ${shipData.launches}</p>
+    `;
+    information__2Load.appendChild(launchesLoad);
+};
+
+
 /*
   Actualización de la interfaz con la información de mis barcoss
 */
@@ -1111,6 +1225,9 @@ const getAllShips_ForId = async (e) => {
   
     let ship = await getAllships_Id(e.target.id);
     console.log(ship);
+
+    let shipData = extractShipData(ship);
+    displayShipData(shipData);
   
     await shipName(ship.name);
 };

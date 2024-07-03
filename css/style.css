@@ -62,6 +62,7 @@ body {
 }
 p{
     margin: 10px;
+    color: var(--color--five);
 }
 @keyframes load{
     100%{

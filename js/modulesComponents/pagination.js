@@ -1279,15 +1279,164 @@ const getAllShips_ForId = async (e) => {
     return div;
 }
 
+const extractCompanyData = (company) => {
+    return {
+        name: company.name,
+        headquarters: {
+            address: company.headquarters.address,
+            city: company.headquarters.city,
+            state: company.headquarters.state
+        },
+        links: {
+            website: company.links.website,
+            flickr: company.links.flickr,
+            twitter: company.links.twitter,
+            elon_twitter: company.links.elon_twitter
+        },
+        founder: company.founder,
+        founded: company.founded,
+        employees: company.employees,
+        vehicles: company.vehicles,
+        launch_sites: company.launch_sites,
+        test_sites: company.test_sites,
+        ceo: company.ceo,
+        cto: company.cto,
+        coo: company.coo,
+        cto_propulsion: company.cto_propulsion,
+        valuation: company.valuation,
+        summary: company.summary,
+        id: company.id
+    };
+};
+
+
+const displayCompanyData = (companyData) => {
+    const section1Load = document.querySelector("#section__information__1");
+    if (section1Load) {
+        section1Load.innerHTML = `
+            <p>Nombre: ${companyData.name}</p>
+            <p>Fundador: ${companyData.founder}</p>
+            <p>Estado: ${companyData.headquarters.state}</p>
+            <p>ID: ${companyData.id}</p>
+            <p>Fundada: ${companyData.founded}</p>
+        `;
+        section1Load.classList.remove('hidden');
+    } else {
+        console.error('El elemento con el selector "#section__information__1 " no existe en el DOM');
+    }
+
+    const sectionImageLoad = document.querySelector("#section__image ");
+    if (sectionImageLoad) {
+        sectionImageLoad.innerHTML = `
+            <img src="storage/img/icons/company.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+        `;
+        sectionImageLoad.classList.remove('hidden');
+    } else {
+        console.error('El elemento con el selector "#section__image " no existe en el DOM');
+    }
+
+    const informationTable2Load = document.querySelector("#information__table__2 ");
+    if (informationTable2Load) {
+        informationTable2Load.innerHTML = `
+            <p>Empleados: ${companyData.employees}</p>
+        `;
+        informationTable2Load.classList.remove('hidden');
+    } else {
+        console.error('El elemento con el selector "#information__table__2 " no existe en el DOM');
+    }
+
+    const informationTable1Load = document.querySelector("#information__table__1 ");
+    if (informationTable1Load) {
+        informationTable1Load.innerHTML = `
+            <p>CEO: ${companyData.ceo}</p>
+        `;
+        informationTable1Load.classList.remove('hidden');
+    } else {
+        console.error('El elemento con el selector "#information__table__1 " no existe en el DOM');
+    }
+
+    const information__2Load = document.querySelector("#information__2");
+    if (information__2Load) {
+        information__2Load.innerHTML = "";
+
+        const vehiclesLoad = document.createElement('div');
+        vehiclesLoad.classList.add('load');
+        vehiclesLoad.innerHTML = `
+            <p>Vehículos: ${companyData.vehicles}</p>
+        `;
+        information__2Load.appendChild(vehiclesLoad);
+
+        const cto_propulsionLoad = document.createElement('div');
+        cto_propulsionLoad.classList.add('load');
+        cto_propulsionLoad.innerHTML = `
+            <p>CTO Propulsión: ${companyData.cto_propulsion}</p>
+        `;
+        information__2Load.appendChild(cto_propulsionLoad);
+
+        const valuationLoad = document.createElement('div');
+        valuationLoad.classList.add('load');
+        valuationLoad.innerHTML = `
+            <p>Valoración: ${companyData.valuation}</p>
+        `;
+        information__2Load.appendChild(valuationLoad);
+
+        const summaryLoad = document.createElement('div');
+        summaryLoad.classList.add('load');
+        summaryLoad.innerHTML = `
+            <p>Resumen: ${companyData.summary}</p>
+        `;
+        information__2Load.appendChild(summaryLoad);
+
+        const linkswebsiteLoad = document.createElement('div');
+        linkswebsiteLoad.classList.add('load');
+        linkswebsiteLoad.innerHTML = `
+            <p>Sitio web: <a href="${companyData.links.website}" target="_blank">${companyData.links.website}</a></p>
+        `;
+        information__2Load.appendChild(linkswebsiteLoad);
+
+        const linkstwitterLoad = document.createElement('div');
+        linkstwitterLoad.classList.add('load');
+        linkstwitterLoad.innerHTML = `
+            <p>Twitter: <a href="${companyData.links.twitter}" target="_blank">${companyData.links.twitter}</a></p>
+        `;
+        information__2Load.appendChild(linkstwitterLoad);
+
+        const linkselon_twitterLoad = document.createElement('div');
+        linkselon_twitterLoad.classList.add('load');
+        linkselon_twitterLoad.innerHTML = `
+            <p>Elon Twitter: <a href="${companyData.links.elon_twitter}" target="_blank">${companyData.links.elon_twitter}</a></p>
+        `;
+        information__2Load.appendChild(linkselon_twitterLoad);
+    } else {
+        console.error('El elemento con el selector "#information__2" no existe en el DOM');
+    }
+};
+
+
+
 /*
   Actualización de la interfaz con la información de mi compañia
 */
 
-export const paginationCompany = async() => {
-    let data = await getAllCompany()
-    await clear()
-    await companyName(data.name);
-}
+document.addEventListener('DOMContentLoaded', async () => {
+    await paginationCompany();
+});
+
+export const paginationCompany = async () => {
+    try {
+        let company = await getAllCompany();
+        await clear();
+
+        let companyData = extractCompanyData(company);
+        displayCompanyData(companyData);
+
+        await companyName(company.name);
+    } catch (error) {
+        console.error('Error fetching and displaying company data:', error);
+    }
+};
+
+
 
 /*
   Actualización de la interfaz con la información de mis naves dragon

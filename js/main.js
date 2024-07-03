@@ -10,7 +10,7 @@ import {
     paginationCompany,
     paginationDrago,
     paginationHistories,
-    paginationLaunches,
+    paginationLaunchpads,
     paginationPayoades,
     paginationRoadster,
     paginationStarlinks
@@ -114,7 +114,7 @@ launch.addEventListener("click", async(e)=>{
     await footerSelect(e, launch)
     let paginacion = document.querySelector("#paginacion");
     paginacion.innerHTML = ""
-    paginacion.append(await paginationLaunches())
+    paginacion.append(await paginationLaunchpads())
 })
 
 let payload = document.querySelector("#payloads")

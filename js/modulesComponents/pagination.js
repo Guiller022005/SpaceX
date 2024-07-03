@@ -1805,6 +1805,86 @@ const getAllHistory_ForId = async (e) => {
     return div;
 }
 
+const extractLaunchpadData = (launchpad) => {
+    return {
+        name: launchpad.name,
+        full_name: launchpad.full_name,
+        locality: launchpad.locality,
+        region: launchpad.region,
+        timezone: launchpad.timezone,
+        latitude: launchpad.latitude,
+        longitude: launchpad.longitude,
+        launch_attempts: launchpad.launch_attempts,
+        launch_successes: launchpad.launch_successes,
+        rockets: launchpad.rockets,
+        launches: launchpad.launches,
+        status: launchpad.status,
+        id: launchpad.id
+    };
+};
+
+const displayLaunchpadData = (launchpadData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+        <p>Name: ${launchpadData.name}</p>
+        <p>Full Name: ${launchpadData.full_name}</p>
+        <p>Locality: ${launchpadData.locality}</p>
+        <p>Status: ${launchpadData.status}</p>
+        <p>ID: ${launchpadData.id}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+    information__2Load.innerHTML = "";
+
+    const timezoneLoad = document.createElement('div');
+    timezoneLoad.classList.add('load');
+    timezoneLoad.innerHTML = `
+        <p>Timezone: ${launchpadData.timezone}</p>
+    `;
+    information__2Load.appendChild(timezoneLoad);
+
+    const dryMassLoad = document.createElement('div');
+    dryMassLoad.classList.add('load');
+    dryMassLoad.innerHTML = `
+        <p>Region: ${launchpadData.region}</p>
+    `;
+    information__2Load.appendChild(dryMassLoad);
+
+    const launchesLoad = document.createElement('div');
+    launchesLoad.classList.add('load');
+    launchesLoad.innerHTML = `
+        <ul>Launches:
+            ${launchpadData.launches.map(launch => `<li>${launch}</li>`).join('')}
+        </ul>
+    `;
+    information__2Load.appendChild(launchesLoad);
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p>Latitude: ${launchpadData.latitude}</p>
+        <p>Longitude: ${launchpadData.longitude}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+        <p>Launch Attempts: ${launchpadData.launch_attempts}</p>
+        <p>Launch Successes: ${launchpadData.launch_successes}</p>
+        <ul>Rockets:
+            ${launchpadData.rockets.map(rocket => `<li>${rocket}</li>`).join('')}
+        </ul>
+    `;
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
+    informationTable2Load.classList.remove('hidden');
+    
+    const sectionImageLoad = document.querySelector("#section__image ");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/launchpads.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+    `;
+    sectionImageLoad.classList.remove('hidden');
+};
 
 
 /*
@@ -1817,7 +1897,7 @@ const getAllLaunchpads_ForId = async (e) => {
     if(e.target.dataset.page){
         let paginacion = document.querySelector("#paginacion");
         paginacion.innerHTML = "";
-        paginacion.append(await paginationLaunches(Number(e.target.dataset.page)));
+        paginacion.append(await paginationLaunchpads(Number(e.target.dataset.page)));
         setTimeout(() => {
             let paginacion = document.querySelector("#paginacion");
             let p1 = paginacion.children[0].children[1];
@@ -1833,6 +1913,9 @@ const getAllLaunchpads_ForId = async (e) => {
   
     let launch = await getAllLaunchpad_Id(e.target.id);
     console.log(launch);
+
+    let launchpadData = extractLaunchpadData(launch);
+    displayLaunchpadData(launchpadData);
   
     await launchpadfull_name(launch.full_name);
 };
@@ -1841,7 +1924,7 @@ const getAllLaunchpads_ForId = async (e) => {
  Paginacion de la seccion de mi historial de launchpads..
  */
 
- export const paginationLaunches = async(page=1, limit= 5)=>{  
+ export const paginationLaunchpads = async(page=1, limit= 5)=>{  
      
     let {docs, pagingCounter, totalPages, nextPage} = await getAll_launchpads(page, limit)
 

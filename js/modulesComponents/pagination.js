@@ -906,6 +906,104 @@ const getAllCore_ForId = async (e) => {
     return div;
 }
 
+
+const extractLandpadData = (landpad) => {
+    return {
+        full_name: landpad.full_name,
+        name: landpad.name,
+        status: landpad.status,
+        type: landpad.type,
+        locality: landpad.locality,
+        region: landpad.region,
+        latitude: landpad.latitude,
+        longitude: landpad.longitude,
+        landing_attempts: landpad.landing_attempts,
+        landing_successes: landpad.landing_successes,
+        wikipedia: landpad.wikipedia,
+        details: landpad.details,
+        launches: landpad.launches,
+        id: landpad.id
+    };
+};
+
+
+const displayLandpadData = (landpadData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+        <p>Name: ${landpadData.name}</p>
+        <p>Status: ${landpadData.status}</p>
+        <p>ID: ${landpadData.id}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p>Type: ${landpadData.type}</p>
+        <p>Locality: ${landpadData.locality}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/landpads.png" style="width: 100%; height: 100%; object-fit: cover;">
+    `;
+    sectionImageLoad.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+
+    // Clear previous content if any
+    information__2Load.innerHTML = "";
+
+    const latitudeLoad = document.createElement('div');
+    latitudeLoad.classList.add('load');
+    latitudeLoad.innerHTML = `
+        <p>Latitude: ${landpadData.latitude}</p>
+    `;
+    information__2Load.appendChild(latitudeLoad);
+
+    const longitudeLoad = document.createElement('div');
+    longitudeLoad.classList.add('load');
+    longitudeLoad.innerHTML = `
+        <p>Longitude: ${landpadData.longitude}</p>
+    `;
+    information__2Load.appendChild(longitudeLoad);
+
+    const landingAttemptsLoad = document.createElement('div');
+    landingAttemptsLoad.classList.add('load');
+    landingAttemptsLoad.innerHTML = `
+        <p>Landing Attempts: ${landpadData.landing_attempts}</p>
+    `;
+    information__2Load.appendChild(landingAttemptsLoad);
+
+    const landingSuccessesLoad = document.createElement('div');
+    landingSuccessesLoad.classList.add('load');
+    landingSuccessesLoad.innerHTML = `
+        <p>Landing Successes: ${landpadData.landing_successes}</p>
+    `;
+    information__2Load.appendChild(landingSuccessesLoad);
+
+    if (landpadData.wikipedia) {
+        const wikipediaLoad = document.createElement('div');
+        wikipediaLoad.classList.add('load');
+        wikipediaLoad.innerHTML = `
+            <p>Wikipedia: <a href="${landpadData.wikipedia}" target="_blank">Wikipedia</a></p>
+        `;
+        information__2Load.appendChild(wikipediaLoad);
+    }
+
+    if (landpadData.details) {
+        const detailsLoad = document.createElement('div');
+        detailsLoad.classList.add('load');
+        detailsLoad.innerHTML = `
+            <p>Details: ${landpadData.details}</p>
+        `;
+        information__2Load.appendChild(detailsLoad);
+    }
+
+    information__2Load.classList.remove('hidden');
+};
+
+
 /*
   Actualización de la interfaz con la información de mis landpadss
 */
@@ -932,6 +1030,9 @@ const getAlllandpad_ForId = async (e) => {
   
     let landpad = await getAllLandpad_Id(e.target.id);
     console.log(landpad);
+
+    let landpadData = extractLandpadData(landpad);
+    displayLandpadData(landpadData);
   
     await landpadFullName(landpad.full_name);
 };

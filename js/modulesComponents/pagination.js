@@ -2239,26 +2239,337 @@ export const paginationPayoades = async(page=1, limit= 5)=>{
     return div;
 }
 
+const extractRoadsterData = (roadster) => {
+    return {
+        flickr_images: roadster.flickr_images,
+        name: roadster.name,
+        launch_date_utc: roadster.launch_date_utc,
+        launch_date_unix: roadster.launch_date_unix,
+        launch_mass_kg: roadster.launch_mass_kg,
+        launch_mass_lbs: roadster.launch_mass_lbs,
+        norad_id: roadster.norad_id,
+        epoch_jd: roadster.epoch_jd,
+        orbit_type: roadster.orbit_type,
+        apoapsis_au: roadster.apoapsis_au,
+        periapsis_au: roadster.periapsis_au,
+        semi_major_axis_au: roadster.semi_major_axis_au,
+        eccentricity: roadster.eccentricity,
+        inclination: roadster.inclination,
+        longitude: roadster.longitude,
+        periapsis_arg: roadster.periapsis_arg,
+        period_days: roadster.period_days,
+        speed_kph: roadster.speed_kph,
+        speed_mph: roadster.speed_mph,
+        earth_distance_km: roadster.earth_distance_km,
+        earth_distance_mi: roadster.earth_distance_mi,
+        mars_distance_km: roadster.mars_distance_km,
+        mars_distance_mi: roadster.mars_distance_mi,
+        wikipedia: roadster.wikipedia,
+        video: roadster.video,
+        details: roadster.details,
+        id: roadster.id
+    };
+};
 
+const displayRoadsterData = (roadsterData) => {
+    const section1Load = document.querySelector("#section__information__1");
+    section1Load.innerHTML = `
+        <p>Name: ${roadsterData.name}</p>
+        <p>Launch Date (UTC): ${roadsterData.launch_date_utc}</p>
+        <p>Launch Date (Unix): ${roadsterData.launch_date_unix}</p>
+        <p>Launch Mass (kg): ${roadsterData.launch_mass_kg}</p>
+        <p>Launch Mass (lbs): ${roadsterData.launch_mass_lbs}</p>
+        <p>ID: ${roadsterData.id}</p>
+    `;
+    section1Load.classList.remove('hidden');
 
-/*
-  Actualización de la interfaz con la información de mis roadster
-*/
+    const information__2Load = document.querySelector("#information__2");
+    information__2Load.innerHTML = "";
+
+    const orbitLoad = document.createElement('div');
+    orbitLoad.classList.add('load');
+    orbitLoad.innerHTML = `
+        <p>Orbit Type: ${roadsterData.orbit_type}</p>
+        <p>Apoapsis (AU): ${roadsterData.apoapsis_au}</p>
+        <p>Periapsis (AU): ${roadsterData.periapsis_au}</p>
+    `;
+    information__2Load.appendChild(orbitLoad);
+
+    const informationTable1Load = document.querySelector("#information__table__1");
+    informationTable1Load.innerHTML = `
+        <p>Semi-Major Axis (AU): ${roadsterData.semi_major_axis_au}</p>
+        <p>Eccentricity: ${roadsterData.eccentricity}</p>
+        <p>Inclination: ${roadsterData.inclination}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2");
+    informationTable2Load.innerHTML = `
+        <p>Longitude: ${roadsterData.longitude}</p>
+        <p>Argument of Periapsis: ${roadsterData.periapsis_arg}</p>
+        <p>Period (days): ${roadsterData.period_days}</p>
+    `;
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
+    informationTable2Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
+    informationTable1Load.classList.remove('hidden');
+
+    const speedLoad = document.createElement('div');
+    speedLoad.classList.add('load');
+    speedLoad.innerHTML = `
+        <p>Speed (kph): ${roadsterData.speed_kph}</p>
+        <p>Speed (mph): ${roadsterData.speed_mph}</p>
+    `;
+    information__2Load.appendChild(speedLoad);
+
+    const distanceLoad = document.createElement('div');
+    distanceLoad.classList.add('load');
+    distanceLoad.innerHTML = `
+        <p>Earth Distance (km): ${roadsterData.earth_distance_km}</p>
+        <p>Earth Distance (mi): ${roadsterData.earth_distance_mi}</p>
+        <p>Mars Distance (km): ${roadsterData.mars_distance_km}</p>
+        <p>Mars Distance (mi): ${roadsterData.mars_distance_mi}</p>
+    `;
+    information__2Load.appendChild(distanceLoad);
+
+    const mediaLoad = document.createElement('div');
+    mediaLoad.classList.add('load');
+    mediaLoad.innerHTML = `
+        <p>Wikipedia: <a href="${roadsterData.wikipedia}" target="_blank">${roadsterData.wikipedia}</a></p>
+        <p>Video: <a href="${roadsterData.video}" target="_blank">${roadsterData.video}</a></p>
+    `;
+    information__2Load.appendChild(mediaLoad);
+
+    const detailsLoad = document.createElement('div');
+    detailsLoad.classList.add('load');
+    detailsLoad.innerHTML = `
+        <p>Details: ${roadsterData.details}</p>
+    `;
+    information__2Load.appendChild(detailsLoad);
+
+    const sectionImageLoad = document.querySelector("#section__image");
+    sectionImageLoad.innerHTML = roadsterData.flickr_images.map(image => `
+        <img src="${image}" style="width: 100%; height: 100%; object-fit: cover; ">
+    `).join('');
+    sectionImageLoad.classList.remove('hidden');
+};
+
 export const paginationRoadster = async() => {
-    let data = await getAllRoadster()
-    await clear()
-    await roadName(data.name);
-}
+    let roadster = await getAllRoadster();  // Supongo que getAllRoadster() es una función que obtendrá los datos del roadster
+    await clear();  // Supongo que clear() es una función que limpiará cualquier contenido existente
+    let roadsterData = extractRoadsterData(roadster);
+    displayRoadsterData(roadsterData);
+    await roadName(roadsterData.name);  // Supongo que roadName es una función que realiza alguna operación con el nombre del roadster
+};
+
+
+const extractStarlinkData = (starlink) => {
+    return {
+        CCSDS_OMM_VERS: starlink.spaceTrack.CCSDS_OMM_VERS,
+        COMMENT: starlink.spaceTrack.COMMENT,
+        CREATION_DATE: starlink.spaceTrack.CREATION_DATE,
+        ORIGINATOR: starlink.spaceTrack.ORIGINATOR,
+        OBJECT_NAME: starlink.spaceTrack.OBJECT_NAME,
+        OBJECT_ID: starlink.spaceTrack.OBJECT_ID,
+        CENTER_NAME: starlink.spaceTrack.CENTER_NAME,
+        REF_FRAME: starlink.spaceTrack.REF_FRAME,
+        TIME_SYSTEM: starlink.spaceTrack.TIME_SYSTEM,
+        MEAN_ELEMENT_THEORY: starlink.spaceTrack.MEAN_ELEMENT_THEORY,
+        EPOCH: starlink.spaceTrack.EPOCH,
+        MEAN_MOTION: starlink.spaceTrack.MEAN_MOTION,
+        ECCENTRICITY: starlink.spaceTrack.ECCENTRICITY,
+        INCLINATION: starlink.spaceTrack.INCLINATION,
+        RA_OF_ASC_NODE: starlink.spaceTrack.RA_OF_ASC_NODE,
+        ARG_OF_PERICENTER: starlink.spaceTrack.ARG_OF_PERICENTER,
+        MEAN_ANOMALY: starlink.spaceTrack.MEAN_ANOMALY,
+        EPHEMERIS_TYPE: starlink.spaceTrack.EPHEMERIS_TYPE,
+        CLASSIFICATION_TYPE: starlink.spaceTrack.CLASSIFICATION_TYPE,
+        NORAD_CAT_ID: starlink.spaceTrack.NORAD_CAT_ID,
+        ELEMENT_SET_NO: starlink.spaceTrack.ELEMENT_SET_NO,
+        REV_AT_EPOCH: starlink.spaceTrack.REV_AT_EPOCH,
+        BSTAR: starlink.spaceTrack.BSTAR,
+        MEAN_MOTION_DOT: starlink.spaceTrack.MEAN_MOTION_DOT,
+        MEAN_MOTION_DDOT: starlink.spaceTrack.MEAN_MOTION_DDOT,
+        SEMIMAJOR_AXIS: starlink.spaceTrack.SEMIMAJOR_AXIS,
+        PERIOD: starlink.spaceTrack.PERIOD,
+        APOAPSIS: starlink.spaceTrack.APOAPSIS,
+        PERIAPSIS: starlink.spaceTrack.PERIAPSIS,
+        OBJECT_TYPE: starlink.spaceTrack.OBJECT_TYPE,
+        RCS_SIZE: starlink.spaceTrack.RCS_SIZE,
+        COUNTRY_CODE: starlink.spaceTrack.COUNTRY_CODE,
+        LAUNCH_DATE: starlink.spaceTrack.LAUNCH_DATE,
+        SITE: starlink.spaceTrack.SITE,
+        DECAY_DATE: starlink.spaceTrack.DECAY_DATE,
+        DECAYED: starlink.spaceTrack.DECAYED,
+        FILE: starlink.spaceTrack.FILE,
+        GP_ID: starlink.spaceTrack.GP_ID,
+        TLE_LINE0: starlink.spaceTrack.TLE_LINE0,
+        TLE_LINE1: starlink.spaceTrack.TLE_LINE1,
+        TLE_LINE2: starlink.spaceTrack.TLE_LINE2,
+        version: starlink.version,
+        launch: starlink.launch,
+        longitude: starlink.longitude,
+        latitude: starlink.latitude,
+        height_km: starlink.height_km,
+        velocity_kms: starlink.velocity_kms,
+        id: starlink.id
+    };
+};
+
+
+const displayStarlinkData = (starlinkData) => {
+    // Mostrar solo 3 datos en section__information__1
+    const section1Load = document.querySelector("#section__information__1");
+    section1Load.innerHTML = `
+        <p>Object Name: ${starlinkData.OBJECT_NAME}</p>
+        <p>Object ID: ${starlinkData.OBJECT_ID}</p>
+        <p>Launch Date: ${starlinkData.LAUNCH_DATE}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const descriptionItemLoad = document.querySelector(".description__item");
+    descriptionItemLoad.innerHTML = `
+        <div class="load">
+            <p>BSTAR: ${starlinkData.BSTAR}</p>
+        </div>
+        <div class="load">
+            <p>Mean Motion Dot: ${starlinkData.MEAN_MOTION_DOT}</p>
+        </div>
+        <div class="load">
+            <p>Mean Motion Double Dot: ${starlinkData.MEAN_MOTION_DDOT}</p>
+        </div>
+        <div class="load">
+            <p>Semi-major Axis: ${starlinkData.SEMIMAJOR_AXIS}</p>
+        </div>
+        <div class="load">
+            <p>Period: ${starlinkData.PERIOD}</p>
+        </div>
+        <div class="load">
+            <p>Apoapsis: ${starlinkData.APOAPSIS}</p>
+        </div>
+        <div class="load">
+            <p>Periapsis: ${starlinkData.PERIAPSIS}</p>
+        </div>
+    `;
+
+    // Crear contenedores y asignar datos para information__2Load
+    const information__2Load = document.querySelector("#information__2");
+    information__2Load.innerHTML = "";
+
+    const basicDataLoad = document.createElement('div');
+    basicDataLoad.classList.add('load');
+    basicDataLoad.innerHTML = `
+        <p>CCSDS OMM Version: ${starlinkData.CCSDS_OMM_VERS}</p>
+        <p>Comment: ${starlinkData.COMMENT}</p>
+        <p>Creation Date: ${starlinkData.CREATION_DATE}</p>
+    `;
+    information__2Load.appendChild(basicDataLoad);
+
+    const additionalDataLoad = document.createElement('div');
+    additionalDataLoad.classList.add('load');
+    additionalDataLoad.innerHTML = `
+        <p>Originator: ${starlinkData.ORIGINATOR}</p>
+        <p>Center Name: ${starlinkData.CENTER_NAME}</p>
+        <p>Reference Frame: ${starlinkData.REF_FRAME}</p>
+    `;
+    information__2Load.appendChild(additionalDataLoad);
+
+    const moreDataLoad = document.createElement('div');
+    moreDataLoad.classList.add('load');
+    moreDataLoad.innerHTML = `
+        <p>Time System: ${starlinkData.TIME_SYSTEM}</p>
+        <p>Mean Element Theory: ${starlinkData.MEAN_ELEMENT_THEORY}</p>
+        <p>Epoch: ${starlinkData.EPOCH}</p>
+    `;
+    information__2Load.appendChild(moreDataLoad);
+
+    // Crear contenedores y asignar datos para informationTable1Load
+    const informationTable1Load = document.querySelector("#information__table__1");
+    informationTable1Load.innerHTML = `
+        <p>Mean Motion: ${starlinkData.MEAN_MOTION}</p>
+        <p>Eccentricity: ${starlinkData.ECCENTRICITY}</p>
+        <p>Inclination: ${starlinkData.INCLINATION}</p>
+        <p>RA of Ascending Node: ${starlinkData.RA_OF_ASC_NODE}</p>
+        <p>Argument of Pericenter: ${starlinkData.ARG_OF_PERICENTER}</p>
+        <p>Mean Anomaly: ${starlinkData.MEAN_ANOMALY}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
+    informationTable1Load.classList.remove('hidden');
+
+    // Crear contenedores y asignar datos para informationTable2Load
+    const informationTable2Load = document.querySelector("#information__table__2");
+    informationTable2Load.innerHTML = `
+        <p>Ephemeris Type: ${starlinkData.EPHEMERIS_TYPE}</p>
+        <p>Classification Type: ${starlinkData.CLASSIFICATION_TYPE}</p>
+        <p>NORAD Catalog ID: ${starlinkData.NORAD_CAT_ID}</p>
+        <p>Element Set Number: ${starlinkData.ELEMENT_SET_NO}</p>
+        <p>Revolutions at Epoch: ${starlinkData.REV_AT_EPOCH}</p>
+        
+    `;
+    informationTable2Load.classList.remove('hidden');
+
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
+    informationTable2Load.classList.remove('hidden');
+
+    // Añadir más datos a information__2Load
+    const objectTypeLoad = document.createElement('div');
+    objectTypeLoad.classList.add('load');
+    objectTypeLoad.innerHTML = `
+        <p>Object Type: ${starlinkData.OBJECT_TYPE}</p>
+        <p>RCS Size: ${starlinkData.RCS_SIZE}</p>
+        <p>Country Code: ${starlinkData.COUNTRY_CODE}</p>
+    `;
+    information__2Load.appendChild(objectTypeLoad);
+
+    const locationLoad = document.createElement('div');
+    locationLoad.classList.add('load');
+    locationLoad.innerHTML = `
+        <p>Longitude: ${starlinkData.longitude}</p>
+        <p>Latitude: ${starlinkData.latitude}</p>
+        <p>Height (km): ${starlinkData.height_km}</p>
+        <p>Velocity (km/s): ${starlinkData.velocity_kms}</p>
+    `;
+    information__2Load.appendChild(locationLoad);
+
+    const additionalInfoLoad = document.createElement('div');
+    additionalInfoLoad.classList.add('load');
+    additionalInfoLoad.innerHTML = `
+        <p>Decay Date: ${starlinkData.DECAY_DATE}</p>
+        <p>Decayed: ${starlinkData.DECAYED}</p>
+        <p>File: ${starlinkData.FILE}</p>
+        <p>GP ID: ${starlinkData.GP_ID}</p>
+        <p>TLE Line 0: ${starlinkData.TLE_LINE0}</p>
+        <p>TLE Line 1: ${starlinkData.TLE_LINE1}</p>
+        <p>TLE Line 2: ${starlinkData.TLE_LINE2}</p>
+        <p>Version: ${starlinkData.version}</p>
+        <p>Launch: ${starlinkData.launch}</p>
+        <p>ID: ${starlinkData.id}</p>
+    `;
+    information__2Load.appendChild(additionalInfoLoad);
+
+    const sectionImageLoad = document.querySelector("#section__image ");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/deathStar.jpg" style="width: 100%; height: 100%; object-fit: contain;">
+    `;
+    sectionImageLoad.classList.remove('hidden');
+};
 
 
 /*
   Actualización de la interfaz con la información de mis starlinks
 */
 
-const getAllstarlinks_ForId = async (e) => {
+const getAllStarlinks_ForId = async (e) => {
     e.preventDefault();
-  
-    if(e.target.dataset.page){
+
+    if (e.target.dataset.page) {
         let paginacion = document.querySelector("#paginacion");
         paginacion.innerHTML = "";
         paginacion.append(await paginationStarlinks(Number(e.target.dataset.page)));
@@ -2268,19 +2579,20 @@ const getAllstarlinks_ForId = async (e) => {
             p1.click();
         }, 200);
     }
-  
+
     let a = e.target.parentElement.children;
     for (let val of a) {
-      val.classList.remove('activo');
+        val.classList.remove('activo');
     }
     e.target.classList.add('activo');
-  
-    let starl = await getAllstarlink_Id(e.target.id);
-    console.log(starl);
-  
-    await starlinkName(starl.spaceTrack.OBJECT_NAME);
-};
 
+    let starlink = await getAllstarlink_Id(e.target.id);
+    console.log(starlink);
+
+    let starlinkData = extractStarlinkData(starlink);
+    displayStarlinkData(starlinkData);
+    await starlinkName(starlinkData.OBJECT_NAME);
+};
 /**
  Paginacion de la seccion de mi historial de starlinks..
  */
@@ -2297,14 +2609,14 @@ const getAllstarlinks_ForId = async (e) => {
     start.setAttribute("href","#");
     start.innerHTML = "&laquo";
     start.setAttribute("data-page", (page==1) ? totalPages : page-1)
-    start.addEventListener("click", getAllstarlinks_ForId)
+    start.addEventListener("click", getAllStarlinks_ForId)
     div.appendChild(start);
     docs.forEach((val,id) => {
         let a = document.createElement("a");
         a.setAttribute("href","#");
         a.id = val.id;
         a.textContent = pagingCounter;
-        a.addEventListener("click", getAllstarlinks_ForId)
+        a.addEventListener("click", getAllStarlinks_ForId)
         div.appendChild(a);
         pagingCounter++
     });
@@ -2312,7 +2624,7 @@ const getAllstarlinks_ForId = async (e) => {
     end.setAttribute("href","#");
     end.innerHTML = "&raquo;";
     end.setAttribute("data-page", (page && nextPage) ? page+1 : 1)
-    end.addEventListener("click", getAllstarlinks_ForId)
+    end.addEventListener("click", getAllStarlinks_ForId)
     div.appendChild(end);
     console.log(div);
     let [back, p1,p2,p3,p4, next] = div.children

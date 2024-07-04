@@ -1827,7 +1827,6 @@ const displayLaunchpadData = (launchpadData) => {
     const section1Load = document.querySelector("#section__information__1 .load");
     section1Load.innerHTML = `
         <p>Name: ${launchpadData.name}</p>
-        <p>Full Name: ${launchpadData.full_name}</p>
         <p>Locality: ${launchpadData.locality}</p>
         <p>Status: ${launchpadData.status}</p>
         <p>ID: ${launchpadData.id}</p>
@@ -1865,6 +1864,10 @@ const displayLaunchpadData = (launchpadData) => {
         <p>Latitude: ${launchpadData.latitude}</p>
         <p>Longitude: ${launchpadData.longitude}</p>
     `;
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
     informationTable1Load.classList.remove('hidden');
 
     const informationTable2Load = document.querySelector("#information__table__2 .load");
@@ -1966,7 +1969,196 @@ const getAllLaunchpads_ForId = async (e) => {
     // </div>
     return div;
 }
+const extractPayloadData = (payload) => {
+    return {
+        name: payload.name,
+        type: payload.type,
+        reused: payload.reused,
+        launch: payload.launch,
+        customers: payload.customers,
+        norad_ids: payload.norad_ids,
+        nationalities: payload.nationalities,
+        manufacturers: payload.manufacturers,
+        mass_kg: payload.mass_kg,
+        mass_lbs: payload.mass_lbs,
+        orbit: payload.orbit,
+        reference_system: payload.reference_system,
+        regime: payload.regime,
+        longitude: payload.longitude,
+        semi_major_axis_km: payload.semi_major_axis_km,
+        eccentricity: payload.eccentricity,
+        periapsis_km: payload.periapsis_km,
+        apoapsis_km: payload.apoapsis_km,
+        inclination_deg: payload.inclination_deg,
+        period_min: payload.period_min,
+        lifespan_years: payload.lifespan_years,
+        epoch: payload.epoch,
+        mean_motion: payload.mean_motion,
+        raan: payload.raan,
+        arg_of_pericenter: payload.arg_of_pericenter,
+        mean_anomaly: payload.mean_anomaly,
+        id: payload.id,
+        dragon: payload.dragon
+    };
+};
 
+const displayPayloadData = (payloadData) => {
+    const section1Load = document.querySelector("#section__information__1 .load");
+    section1Load.innerHTML = `
+        <p>Name: ${payloadData.name}</p>
+        <p>Type: ${payloadData.type}</p>
+        <p>Reused: ${payloadData.reused}</p>
+        <p>Launch: ${payloadData.launch}</p>
+        <p>ID: ${payloadData.id}</p>
+    `;
+    section1Load.classList.remove('hidden');
+
+    const information__2Load = document.querySelector("#information__2");
+    information__2Load.innerHTML = "";
+
+    const customersLoad = document.createElement('div');
+    customersLoad.classList.add('load');
+    customersLoad.innerHTML = `
+        <ul>Customers:
+            ${payloadData.customers.map(customer => `<li>${customer}</li>`).join('')}
+        </ul>
+    `;
+    information__2Load.appendChild(customersLoad);
+
+    const noradIdsLoad = document.createElement('div');
+    noradIdsLoad.classList.add('load');
+    noradIdsLoad.innerHTML = `
+        <ul>NORAD IDs:
+            ${payloadData.norad_ids.map(id => `<li>${id}</li>`).join('')}
+        </ul>
+    `;
+    information__2Load.appendChild(noradIdsLoad);
+
+    const nationalitiesLoad = document.createElement('div');
+    nationalitiesLoad.classList.add('load');
+    nationalitiesLoad.innerHTML = `
+        <ul>Nationalities:
+            ${payloadData.nationalities.map(nationality => `<li>${nationality}</li>`).join('')}
+        </ul>
+    `;
+    information__2Load.appendChild(nationalitiesLoad);
+
+    const manufacturersLoad = document.createElement('div');
+    manufacturersLoad.classList.add('load');
+    manufacturersLoad.innerHTML = `
+        <ul>Manufacturers:
+            ${payloadData.manufacturers.map(manufacturer => `<li>${manufacturer}</li>`).join('')}
+        </ul>
+    `;
+    information__2Load.appendChild(manufacturersLoad);
+
+    const orbitLoad = document.createElement('div');
+    orbitLoad.classList.add('load');
+    orbitLoad.innerHTML = `
+        <p>Orbit: ${payloadData.orbit}</p>
+        <p>Reference System: ${payloadData.reference_system}</p>
+        <p>Regime: ${payloadData.regime}</p>
+    `;
+    information__2Load.appendChild(orbitLoad);
+
+    const semiMajorAxisLoad = document.createElement('div');
+    semiMajorAxisLoad.classList.add('load');
+    semiMajorAxisLoad.innerHTML = `
+        <p>Semi-Major Axis (km): ${payloadData.semi_major_axis_km}</p>
+        <p>Eccentricity: ${payloadData.eccentricity}</p>
+    `;
+    information__2Load.appendChild(semiMajorAxisLoad);
+
+    const periapsisApoapsisLoad = document.createElement('div');
+    periapsisApoapsisLoad.classList.add('load');
+    periapsisApoapsisLoad.innerHTML = `
+        <p>Periapsis (km): ${payloadData.periapsis_km}</p>
+        <p>Apoapsis (km): ${payloadData.apoapsis_km}</p>
+    `;
+    information__2Load.appendChild(periapsisApoapsisLoad);
+
+    const inclinationLoad = document.createElement('div');
+    inclinationLoad.classList.add('load');
+    inclinationLoad.innerHTML = `
+        <p>Inclination (deg): ${payloadData.inclination_deg}</p>
+    `;
+    information__2Load.appendChild(inclinationLoad);
+
+    const periodLifespanLoad = document.createElement('div');
+    periodLifespanLoad.classList.add('load');
+    periodLifespanLoad.innerHTML = `
+        <p>Period (min): ${payloadData.period_min}</p>
+        <p>Lifespan (years): ${payloadData.lifespan_years}</p>
+    `;
+    information__2Load.appendChild(periodLifespanLoad);
+
+    const epochLoad = document.createElement('div');
+    epochLoad.classList.add('load');
+    epochLoad.innerHTML = `
+        <p>Epoch: ${payloadData.epoch}</p>
+        <p>Mean Motion: ${payloadData.mean_motion}</p>
+    `;
+    information__2Load.appendChild(epochLoad);
+
+    const raanLoad = document.createElement('div');
+    raanLoad.classList.add('load');
+    raanLoad.innerHTML = `
+        <p>RAAN: ${payloadData.raan}</p>
+    `;
+    information__2Load.appendChild(raanLoad);
+
+    const argOfPericenterLoad = document.createElement('div');
+    argOfPericenterLoad.classList.add('load');
+    argOfPericenterLoad.innerHTML = `
+        <p>Argument of Pericenter: ${payloadData.arg_of_pericenter}</p>
+    `;
+    information__2Load.appendChild(argOfPericenterLoad);
+
+    const meanAnomalyLoad = document.createElement('div');
+    meanAnomalyLoad.classList.add('load');
+    meanAnomalyLoad.innerHTML = `
+        <p>Mean Anomaly: ${payloadData.mean_anomaly}</p>
+    `;
+    information__2Load.appendChild(meanAnomalyLoad);
+
+    if (payloadData.dragon) {
+        const dragonLoad = document.createElement('div');
+        dragonLoad.classList.add('load');
+        dragonLoad.innerHTML = `
+            <p>Dragon Capsule: ${payloadData.dragon.capsule}</p>
+            <p>Mass Returned (kg): ${payloadData.dragon.mass_returned_kg}</p>
+            <p>Manifest: ${payloadData.dragon.manifest}</p>
+            
+        `;
+        information__2Load.appendChild(dragonLoad);
+    }
+
+    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    informationTable1Load.innerHTML = `
+        <p>Mass Returned (lbs): ${payloadData.dragon.mass_returned_lbs}</p>
+        <p>Flight Time (sec): ${payloadData.dragon.flight_time_sec}</p>
+    `;
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+        <p>Water Landing: ${payloadData.dragon.water_landing}</p>
+        <p>Land Landing: ${payloadData.dragon.land_landing}</p>
+    `;
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
+    informationTable2Load.classList.remove('hidden');
+
+    const sectionImageLoad = document.querySelector("#section__image .load");
+    sectionImageLoad.innerHTML = `
+        <img src="storage/img/icons/payloads.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    `;
+    sectionImageLoad.classList.remove('hidden');
+};
 /*
   Actualización de la interfaz con la información de mis Payloads
 */
@@ -1994,6 +2186,9 @@ const getAllPayloads_ForId = async (e) => {
     let payload = await getAllPayload_Id(e.target.id);
     console.log(payload);
   
+    let launchpadData = extractPayloadData(payload);
+    displayPayloadData(launchpadData);
+
     await payloadName(payload.name);
 };
 
@@ -2043,6 +2238,8 @@ export const paginationPayoades = async(page=1, limit= 5)=>{
     // </div>
     return div;
 }
+
+
 
 /*
   Actualización de la interfaz con la información de mis roadster

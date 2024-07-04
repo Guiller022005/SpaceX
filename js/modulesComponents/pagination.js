@@ -438,23 +438,29 @@ const displayCrewData = (crewData) => {
 
     const sectionImageLoad = document.querySelector("#section__image .load");
     sectionImageLoad.innerHTML = `
-        <img src="${crewData.image}" style="width: 100%; height: 100%; object-fit: cover;" alt="${crewData.agency}" <img src="https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg" referrerpolicy="no-referrer">/>
+        <img src="${crewData.image}" style="width: 100%; height: 100%; object-fit: cover;" alt="${crewData.agency}" <img src="https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg" referrerpolicy="no-referrer"/>
     `;
     sectionImageLoad.style.height = "450px"; // Ajuste de altura a 400px
     sectionImageLoad.classList.remove('hidden');
 
-    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    const informationTable2Load = document.querySelector("#information__table__2 ");
     informationTable2Load.innerHTML = `
     
         <p>Launches: ${crewData.launches}</p>
     `;
     informationTable2Load.classList.remove('hidden');
 
-    const informationTable1Load = document.querySelector("#information__table__1 .load");
+    const informationTable1Load = document.querySelector("#information__table__1 ");
     informationTable1Load.innerHTML = `
+        <img src="storage/img/icons/darthVader.webp" style="width: 100%; height: 100%; object-fit: cover cover;" referrerpolicy="no-referrer">
         <p><a href="${crewData.wikipedia}" target="_blank">Wikipedia</a></p>
         
     `;
+
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
     informationTable1Load.classList.remove('hidden');
 };
 
@@ -783,19 +789,23 @@ const displayCoreData = (coresData) => {
         <p>Rtls_attempts: ${coresData.rtls_attempts}</p>
         <p>Drtls_landings: ${coresData.rtls_landings}</p>
         
-    `;
+        `;
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
     informationTable1Load.classList.remove('hidden');
 
     const informationTable2Load = document.querySelector("#information__table__2 .load");
     informationTable2Load.innerHTML = `
-        <p>Launches: ${coresData.launches}</p>
-        
+    <p>Launches: ${coresData.launches}</p>
+    
     `;
     informationTable2Load.classList.remove('hidden');
 
     const sectionImageLoad = document.querySelector("#section__image .load");
     sectionImageLoad.innerHTML = `
-        <img src="storage/img/icons/cores.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+    <img src="storage/img/icons/joda.webp" style="width: 100%; height: 100%; object-fit: cover;">
     `;
     sectionImageLoad.classList.remove('hidden');
 
@@ -942,6 +952,20 @@ const displayLandpadData = (landpadData) => {
         <p>Locality: ${landpadData.locality}</p>
     `;
     informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
+    informationTable1Load.classList.remove('hidden');
+
+    const informationTable2Load = document.querySelector("#information__table__2 .load");
+    informationTable2Load.innerHTML = `
+        <p>Region: ${landpadData.region}</p>
+    `;
+    informationTable2Load.classList.remove('hidden');
+
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
+    informationTable2Load.classList.remove('hidden');
 
     const sectionImageLoad = document.querySelector("#section__image .load");
     sectionImageLoad.innerHTML = `
@@ -1134,13 +1158,24 @@ const displayShipData = (shipData) => {
     informationTable2Load.innerHTML = `
     
         <p>Legacy_id: ${shipData.legacy_id}</p>
+        <p>Mmsi: ${shipData.mmsi}</p>
     `;
+    informationTable2Load.classList.remove('hidden');
+
+    informationTable2Load.style.display = 'flex';
+    informationTable2Load.style.flexDirection = 'column';
     informationTable2Load.classList.remove('hidden');
 
     const informationTable1Load = document.querySelector("#information__table__1 .load");
     informationTable1Load.innerHTML = `
-    <p>Legacy_id: ${shipData.last_ais_update}</p>
+        <p>Last_ais_update: ${shipData.last_ais_update}</p>
+        <p>Imo: ${shipData.imo}</p>
+        <p>Abs: ${shipData.abs}</p>
     `;
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
     informationTable1Load.classList.remove('hidden');
 
     const information__2Load = document.querySelector("#information__2");
@@ -1527,7 +1562,12 @@ const displayDragonData = (DragonData) => {
     informationTable1Load.innerHTML = `
         <p>Active: ${DragonData.active}</p>
         <p>Crew Capacity: ${DragonData.crew_capacity}</p>
+        <p>Sidewall_angle_deg: ${DragonData.sidewall_angle_deg}</p>
     `;
+    informationTable1Load.classList.remove('hidden');
+
+    informationTable1Load.style.display = 'flex';
+    informationTable1Load.style.flexDirection = 'column';
     informationTable1Load.classList.remove('hidden');
 
     const informationTable2Load = document.querySelector("#information__table__2 .load");
@@ -1535,7 +1575,7 @@ const displayDragonData = (DragonData) => {
         <ul>Thrusters:
             ${DragonData.thrusters.map(thruster => `<li>${thruster.type}</li>`).join('')}
         </ul>
-        <p>Crew Capacity: ${DragonData.crew_capacity}</p>
+        <p>First_flight: ${DragonData.first_flight}</p>
     `;
     informationTable2Load.style.display = 'flex';
     informationTable2Load.style.flexDirection = 'column';
@@ -1592,6 +1632,26 @@ const displayDragonData = (DragonData) => {
         <p>Description: ${DragonData.description}</p>
     `;
     information__2Load.appendChild(descriptionLoad);
+
+    const description__item = document.querySelector("#description__item ");
+    description__item.innerHTML = `
+    <div class="load">
+        <ul>Thrusters:
+            ${DragonData.thrusters.map(thruster => `<li>${thruster.fuel_1}</li>`).join('')}
+        </ul>
+    </div>
+    <div class="load">
+        <ul>Thrusters:
+            ${DragonData.thrusters.map(thruster => `<li>${thruster.fuel_2}</li>`).join('')}
+        </ul>
+    </div>
+    <div class="load">
+        <ul>Thrusters:
+            ${DragonData.thrusters.map(thruster => `<li>${thruster.isp}</li>`).join('')}
+        </ul>
+    </div>
+    `;
+    informationTable1Load.classList.remove('hidden');
 };
 
 
